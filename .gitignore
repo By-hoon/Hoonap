@@ -27,3 +27,5 @@ yarn-error.log*
 /.ico
 /.png
 /.txt
+
+/src/image

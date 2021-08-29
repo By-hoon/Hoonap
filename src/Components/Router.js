@@ -6,12 +6,15 @@ import {
     Switch
 } from "react-router-dom";
 import Header from "Components/Header";
+import Home from "Routes/Home";
 
 export default () => (
     <Router>
         <>
             <Header />
-            <Switch></Switch>
+            <Switch>
+                <Route path="/" exact component={Home} />
+            </Switch>
         </>
     </Router>
 );
