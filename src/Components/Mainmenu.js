@@ -12,12 +12,13 @@ const MenuContainer = styled.div`
 `;
 
 const MenuBox = styled.div`
-    width: 1000px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
+    max-width: 1000px;
+    max-height: 600px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    border: 1px solid black;
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    grid-template-rows: repeat(2, minmax(300px, 1fr));
 `;
 
 const MenuItem = styled(Link)`
