@@ -33,12 +33,11 @@ const Image = styled.img.attrs({
 const imgUrl = logo;
 
 const items = [
-    { id: 1, url: imgUrl },
-    { id: 2, url: imgUrl },
-    { id: 3, url: imgUrl },
+    { id: 1, projectName: "hoonap", url: imgUrl },
+    { id: 2, projectName: "hoowitter", url: imgUrl },
+    { id: 3, projectName: "hooflix", url: imgUrl },
 
 ];
-
 
 export default class extends React.Component {
     render() {
@@ -56,9 +55,10 @@ export default class extends React.Component {
             <Container>
                 <StyledSlider {...settings}>
                     {items.map(item => {
+                        const toylink = `/toyprojects/${items.projectName}`;
                         return (
                             <div key={item.id}>
-                                <ToyLink>
+                                <ToyLink to={toylink}>
                                     <Image src={item.url} />
                                 </ToyLink>
                             </div>

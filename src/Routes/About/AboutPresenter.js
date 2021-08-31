@@ -8,6 +8,7 @@ const AboutPresenter = () => (
         <Helmet>
             <title>About | BYHOON</title>
         </Helmet>
+        <h3>This is about page</h3>
     </>
 );
 
