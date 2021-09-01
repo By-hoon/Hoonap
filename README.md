@@ -22,13 +22,14 @@ _all screens have header and footer_
     + click to move other screens
 
 ### Toyprojects
--
+- Projects Slideshow
 
 ### Blog
 -
 
 ### Gallery
--
+- Map (naver map api)
+    - polygon (click, mouseover)
 
 ### Painting
 -
