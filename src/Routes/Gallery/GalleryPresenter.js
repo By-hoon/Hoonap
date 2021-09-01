@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
-import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
+import { RenderAfterNavermapsLoaded, NaverMap, Polygon } from 'react-naver-maps';
 import Poly from "Components/Mapoption/Polygon"
+import { render } from "@testing-library/react";
 
 const MapContainer = styled.div`
     display: flex;
@@ -22,34 +23,61 @@ const paths = [
     { lat: 37.37544345085402, lng: 127.11224555969238 }
 ];
 
-const GalleryPresenter = () => (
-    <>
-        <Helmet>
-            <title>Gallery | BYHOON</title>
-        </Helmet>
-        <MapContainer>
-            <RenderAfterNavermapsLoaded
-                ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
-            >
-                <NaverMap
-                    mapDivId={'maps-getting-started-uncontrolled'}
-                    style={{
-                        width: '70%',
-                        height: '80vh',
-                    }}
-                    defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
-                    defaultZoom={12}
-                    onClick={(e) => {
-                        alert(e.coord.lat() + ', ' + e.coord.lng());
-                    }}
-                >
-                    <Poly
-                        paths={paths}
-                    />
-                </NaverMap>
-            </RenderAfterNavermapsLoaded>
-        </MapContainer>
-    </>
-);
+class GalleryPresenter extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            fillColor: '#ff0000',
+        };
+    }
+
+    fillColorChange = () => {
+        this.setState({
+            fillColor: "#004ff0",
+        });
+    };
+    fillColorBack = () => {
+        this.setState({
+            fillColor: "#ff0000",
+        });
+    };
+
+    render() {
+        return (
+            <>
+                <Helmet>
+                    <title>Gallery | BYHOON</title>
+                </Helmet>
+                <MapContainer>
+                    <RenderAfterNavermapsLoaded
+                        ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
+                    >
+                        <NaverMap
+                            mapDivId={'maps-getting-started-uncontrolled'}
+                            style={{
+                                width: '70%',
+                                height: '80vh',
+                            }}
+                            defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
+                            defaultZoom={12}
+                            onClick={(e) => {
+                                alert(e.coord.lat() + ', ' + e.coord.lng());
+                            }}
+                        >
+                            <Poly
+                                fillColorChange={this.fillColorChange}
+                                fillColorBack={this.fillColorBack}
+                                fillColor={this.state.fillColor}
+                                paths={paths}
+                            />
+                        </NaverMap>
+                    </RenderAfterNavermapsLoaded>
+                </MapContainer>
+            </>
+
+        )
+    }
+};
 
 export default GalleryPresenter;
