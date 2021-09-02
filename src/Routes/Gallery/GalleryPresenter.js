@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Helmet from "react-helmet";
 import { RenderAfterNavermapsLoaded, NaverMap, Polygon } from 'react-naver-maps';
 import Poly from "Components/Mapoption/Polygon"
+import Preview from "Components/Mapoption/Preview"
 import { render } from "@testing-library/react";
 
 const MapContainer = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
 `
 
 const paths = [
@@ -29,6 +30,7 @@ class GalleryPresenter extends Component {
 
         this.state = {
             fillColor: '#ff0000',
+            display: 'off',
         };
     }
 
@@ -43,6 +45,18 @@ class GalleryPresenter extends Component {
         });
     };
 
+    displayNone = () => {
+        this.setState({
+            display: 'off',
+        });
+    }
+
+    displayOver = () => {
+        this.setState({
+            display: 'on',
+        });
+    }
+
     render() {
         return (
             <>
@@ -56,8 +70,8 @@ class GalleryPresenter extends Component {
                         <NaverMap
                             mapDivId={'maps-getting-started-uncontrolled'}
                             style={{
-                                width: '70%',
-                                height: '80vh',
+                                width: '50%',
+                                height: '70vh',
                             }}
                             defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
                             defaultZoom={12}
@@ -68,12 +82,15 @@ class GalleryPresenter extends Component {
                             <Poly
                                 fillColorChange={this.fillColorChange}
                                 fillColorBack={this.fillColorBack}
+                                displayNone={this.displayNone}
+                                displayOver={this.displayOver}
                                 fillColor={this.state.fillColor}
                                 paths={paths}
                             />
                         </NaverMap>
                     </RenderAfterNavermapsLoaded>
                 </MapContainer>
+                {this.state.display === 'on' ? <Preview /> : null}
             </>
 
         )
