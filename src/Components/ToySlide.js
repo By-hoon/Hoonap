@@ -4,10 +4,14 @@ import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import logo from '../image/logo.jpg';
+
+import { Icon } from "@iconify/react";
+
+import hoonapImg from '../image/hoonap.JPG';
+import hooflixImg from '../image/hooflix.JPG';
+import hoowitterImg from '../image/hoowitter.JPG'
 
 const Container = styled.div`
-    /* overflow:hidden; */
 `;
 
 const StyledSlider = styled(Slider)`
@@ -16,7 +20,7 @@ const StyledSlider = styled(Slider)`
     }
 `;
 
-// const ImageContainer = styled.div``;
+const ImageContainer = styled.div``;
 
 const ToyLink = styled(Link)`
     margin: 20px 120px;
@@ -24,18 +28,29 @@ const ToyLink = styled(Link)`
     justify-content: center;
 `;
 
-const Image = styled.img.attrs({
-    src: logo,
-})`
-    width: 55%;
+
+const Image = styled.img`
+    width: 1000px;
 `;
 
-const imgUrl = logo;
+const IconContainer = styled.div`
+`;
+
+const IconStlye = styled.span`
+    font-size: 40px;
+`;
+
+const NameContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+`;
+const ProjectName = styled.span`
+`;
 
 const items = [
-    { id: 1, projectName: "hoonap", url: imgUrl },
-    { id: 2, projectName: "hoowitter", url: imgUrl },
-    { id: 3, projectName: "hooflix", url: imgUrl },
+    { id: 1, projectName: "Hoonap", url: hoonapImg },
+    { id: 2, projectName: "Hoowitter", url: hoowitterImg },
+    { id: 3, projectName: "Hooflix", url: hooflixImg },
 
 ];
 
@@ -54,14 +69,43 @@ export default class extends React.Component {
         return (
             <Container>
                 <StyledSlider {...settings}>
-                    {items.map(item => {
-                        const toylink = `/toyprojects/${items.projectName}`;
+                    {items.map((item, index) => {
+                        const toyName = item.projectName.toLowerCase();
+                        const toyLink = `/toyprojects/${toyName}`;
                         return (
-                            <div key={item.id}>
-                                <ToyLink to={toylink}>
-                                    <Image src={item.url} />
-                                </ToyLink>
-                            </div>
+                            <ImageContainer key={index}>
+                                <NameContainer >
+                                    <ProjectName>{item.projectName}</ProjectName>
+                                    <IconContainer>
+                                        {item.projectName === "Hoonap" ? (
+                                            <IconStlye>
+                                                <Icon icon="vscode-icons:file-type-js-official" style={{ marginRight: 15 }} />
+                                                <Icon icon="vscode-icons:file-type-scss" style={{ marginRight: 15 }} />
+                                                <Icon icon="vscode-icons:file-type-pug" style={{ marginRight: 15 }} />
+                                                <Icon icon="vscode-icons:file-type-node" style={{ marginRight: 15 }} />
+                                                <Icon icon="vscode-icons:file-type-mongo" style={{ marginRight: 15 }} />
+                                                <Icon icon="logos:heroku-icon" />
+                                            </IconStlye>
+                                        ) : item.projectName === "Hoowitter" ? (
+                                            <IconStlye>
+                                                <Icon icon="logos:react" style={{ marginRight: 15 }} />
+                                                <Icon icon="logos:firebase" style={{ marginRight: 15 }} />
+                                                <Icon icon="bi:github" />
+                                            </IconStlye>
+                                        ) : (
+                                            <IconStlye>
+                                                <Icon icon="logos:react" style={{ marginRight: 15 }} />
+                                                <Icon icon="logos:netlify" />
+                                            </IconStlye>
+                                        )}
+                                    </IconContainer>
+                                </NameContainer>
+                                <div>
+                                    <ToyLink to={toyLink}>
+                                        <Image src={item.url} />
+                                    </ToyLink>
+                                </div>
+                            </ImageContainer>
                         );
                     })}
                 </StyledSlider>

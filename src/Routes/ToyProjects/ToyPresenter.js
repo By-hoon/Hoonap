@@ -24,7 +24,7 @@ const ToyPresenter = () => (
         <ToySlide />
         <HiddenSpace />
         <SpanBox>
-            <Click>Click</Click>
+            <Click>자세한 내용은 클릭</Click>
         </SpanBox>
     </>
 );
