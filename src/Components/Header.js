@@ -10,7 +10,9 @@ const Header = styled.header`
     margin-bottom: 50px;
 `;
 
-const LogoLink = styled(Link)``;
+const Linkbox = styled(Link)`
+    text-decoration: none;
+`;
 
 const Logo = styled.img.attrs({
     src: logo,
@@ -19,12 +21,22 @@ const Logo = styled.img.attrs({
     height: 30px;
 `;
 
+const Addbtn = styled.span`
+    color: #0984e3;
+    &:hover{
+        cursor: pointer;
+        background-color: #74b9ff;
+        color: white;
+    }
+`
+
 const SearchBtn = styled.input``;
 
 export default () => (
     <Header>
-        <LogoLink to="/"><Logo /></LogoLink>
+        <Linkbox to="/"><Logo /></Linkbox>
         <SearchBtn></SearchBtn>
+        <Linkbox to="/add"><Addbtn>Add Story</Addbtn></Linkbox>
     </Header>
 );
 
