@@ -13,6 +13,7 @@ import Gallery from "Routes/Gallery";
 import Painting from "Routes/Painting";
 import About from "Routes/About";
 import Board from "Routes/Board";
+import Add from "Routes/Add";
 
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
@@ -35,6 +36,7 @@ export default () => (
                 <Route path="/painting" exact component={Painting} />
                 <Route path="/about" exact component={About} />
                 <Route path="/board" exact component={Board} />
+                <Route path="/add" exact component={Add} />
                 <Redirect from="*" to="/" />
             </Switch>
         </>
