@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import { dbService } from "fbase";
 import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
+import { element } from "prop-types";
 
 const MapContainer = styled.div`
     display: flex;
@@ -14,7 +15,6 @@ const SubmitForm = styled.form``;
 const SubmitInput = styled.input``;
 
 const AddPresenter = () => {
-    const [path, setPath] = useState([]);
     let paths = {
         lat: [],
         lng: []
@@ -58,9 +58,6 @@ const AddPresenter = () => {
             <SubmitForm onSubmit={onSubmit}>
                 <SubmitInput type="submit" value="&rarr;" />
             </SubmitForm>
-            {/* {path ? path.map((pa, i) => (
-                <span key={i}>{pa.lat}</span>
-            )) : null} */}
         </>
 
     )

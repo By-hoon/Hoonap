@@ -6,12 +6,12 @@ import { Polygon } from 'react-naver-maps';
 
 class Poly extends Component {
     mouseOverHandle = () => {
-        this.props.fillColorChange()
-        this.props.displayOver()
+        this.props.fillColorChange(this.props.polyId)
+        this.props.displayOver(this.props.polyId)
     }
     mouseOutHandle = () => {
-        this.props.fillColorBack()
-        this.props.displayNone()
+        this.props.fillColorBack(this.props.polyId)
+        this.props.displayNone(this.props.polyId)
     }
     render() {
         return (

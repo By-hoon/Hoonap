@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
-import { RenderAfterNavermapsLoaded, NaverMap, Polygon } from 'react-naver-maps';
+import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
+import { dbService } from "fbase";
 import Poly from "Components/Mapoption/Polygon"
 import Preview from "Components/Mapoption/Preview"
 import { render } from "@testing-library/react";
@@ -12,89 +13,107 @@ const MapContainer = styled.div`
     justify-content: flex-start;
 `
 
-const paths = [
-    { lat: 37.37544345085402, lng: 127.11224555969238 },
-    { lat: 37.37230584065902, lng: 127.10791110992432 },
-    { lat: 37.35975408751081, lng: 127.10795402526855 },
-    { lat: 37.359924641705476, lng: 127.11576461791992 },
-    { lat: 37.35931064479073, lng: 127.12211608886719 },
-    { lat: 37.36043630196386, lng: 127.12293148040771 },
-    { lat: 37.36354029942161, lng: 127.12310314178465 },
-    { lat: 37.365211629488016, lng: 127.12456226348876 },
-    { lat: 37.37544345085402, lng: 127.11224555969238 }
-];
+const GalleryPresenter = () => {
+    const [fillColor, setFillColor] = useState({});
+    const [display, setDisplay] = useState({});
+    const [path, setPath] = useState([]);
+    useEffect(() => {
+        dbService.collection("path").onSnapshot((snapshot) => {
+            const pathArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            const fcArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
+            }));
+            const displayArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
+            }));
 
-class GalleryPresenter extends Component {
-    constructor(props) {
-        super(props);
+            let fcObj = {};
+            let displayObj = {};
 
-        this.state = {
-            fillColor: '#ff0000',
-            display: 'off',
-        };
-    }
+            fcArray.forEach(element => {
+                fcObj[element.id] = '#ff0000';
+            });
+            displayArray.forEach(element => {
+                displayObj[element.id] = 'off';
+            });
 
-    fillColorChange = () => {
-        this.setState({
-            fillColor: "#004ff0",
+            setPath(pathArray);
+            setFillColor(fcObj);
+            setDisplay(displayObj);
         });
+    }, []);
+
+    const fillColorChange = (id) => {
+        let fcObj = { ...fillColor };
+        fcObj[id] = "#004ff0"
+        setFillColor(fcObj);
     };
-    fillColorBack = () => {
-        this.setState({
-            fillColor: "#ff0000",
-        });
+    const fillColorBack = (id) => {
+        let fcObj = { ...fillColor };
+        fcObj[id] = '#ff0000';
+        setFillColor(fcObj);
     };
 
-    displayNone = () => {
-        this.setState({
-            display: 'off',
-        });
+    const displayNone = (id) => {
+        let displayObj = { ...display };
+        displayObj[id] = "off"
+        setDisplay(displayObj);
     }
 
-    displayOver = () => {
-        this.setState({
-            display: 'on',
-        });
+    const displayOver = (id) => {
+        let displayObj = { ...display };
+        displayObj[id] = "on"
+        setDisplay(displayObj);
     }
-
-    render() {
-        return (
-            <>
-                <Helmet>
-                    <title>Gallery | BYHOON</title>
-                </Helmet>
-                <MapContainer>
-                    <RenderAfterNavermapsLoaded
-                        ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
+    return (
+        <>
+            <Helmet>
+                <title>Gallery | BYHOON</title>
+            </Helmet>
+            <MapContainer>
+                <RenderAfterNavermapsLoaded
+                    ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
+                >
+                    <NaverMap
+                        mapDivId={'maps-getting-started-uncontrolled'}
+                        style={{
+                            width: '50%',
+                            height: '70vh',
+                        }}
+                        defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
+                        defaultZoom={12}
+                        onClick={(e) => {
+                            alert(e.coord.lat() + ', ' + e.coord.lng());
+                        }}
                     >
-                        <NaverMap
-                            mapDivId={'maps-getting-started-uncontrolled'}
-                            style={{
-                                width: '50%',
-                                height: '70vh',
-                            }}
-                            defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
-                            defaultZoom={12}
-                            onClick={(e) => {
-                                alert(e.coord.lat() + ', ' + e.coord.lng());
-                            }}
-                        >
-                            <Poly
-                                fillColorChange={this.fillColorChange}
-                                fillColorBack={this.fillColorBack}
-                                displayNone={this.displayNone}
-                                displayOver={this.displayOver}
-                                fillColor={this.state.fillColor}
-                                paths={paths}
-                            />
-                        </NaverMap>
-                    </RenderAfterNavermapsLoaded>
-                </MapContainer>
-                {this.state.display === 'on' ? <Preview /> : null}
-            </>
+                        {path ? path.map(pa => {
+                            let paths = [];
+                            for (let i = 0; i < pa.lat.length; i++) {
+                                paths.push({ lat: pa.lat[i], lng: pa.lng[i] })
+                            };
+                            return (
+                                <Poly
+                                    key={pa.id}
+                                    polyId={pa.id}
+                                    fillColorChange={fillColorChange}
+                                    fillColorBack={fillColorBack}
+                                    displayNone={displayNone}
+                                    displayOver={displayOver}
+                                    fillColor={fillColor[pa.id]}
+                                    paths={paths}
+                                />
+                            )
+                        }) : null}
+                    </NaverMap>
+                </RenderAfterNavermapsLoaded>
+            </MapContainer>
+            {display === 'on' ? <Preview /> : null}
+        </>
 
-        )
-    }
+    )
 };
 
 export default GalleryPresenter;
