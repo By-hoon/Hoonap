@@ -36,7 +36,7 @@ export default () => (
     <Header>
         <Linkbox to="/"><Logo /></Linkbox>
         <SearchBtn></SearchBtn>
-        <Linkbox to="/add"><Addbtn>Add Story</Addbtn></Linkbox>
+        <Linkbox to="/add/path"><Addbtn>Add Story</Addbtn></Linkbox>
     </Header>
 );
 

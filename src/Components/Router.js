@@ -36,7 +36,7 @@ export default () => (
                 <Route path="/painting" exact component={Painting} />
                 <Route path="/about" exact component={About} />
                 <Route path="/board" exact component={Board} />
-                <Route path="/add" exact component={Add} />
+                <Route path="/add/*" exact component={Add} />
                 <Redirect from="*" to="/" />
             </Switch>
         </>
