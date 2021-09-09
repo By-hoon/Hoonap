@@ -85,9 +85,6 @@ const GalleryPresenter = () => {
                         }}
                         defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
                         defaultZoom={12}
-                        onClick={(e) => {
-                            alert(e.coord.lat() + ', ' + e.coord.lng());
-                        }}
                     >
                         {path ? path.map(pa => {
                             let paths = [];

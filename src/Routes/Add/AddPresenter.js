@@ -1,65 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Helmet from "react-helmet";
-import { dbService } from "fbase";
-import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
-import { element } from "prop-types";
+import Addpath from "Components/Add/Addpath";
+import Addimage from "Components/Add/Addimage";
+import Addstory from "Components/Add/Addstory";
+import { Icon } from "@iconify/react";
 
-const MapContainer = styled.div`
-    display: flex;
-    justify-content: flex-start;
-`
+const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: minmax(100px, 200px) minmax(1000px, 1fr);
+`;
 
-const SubmitForm = styled.form``;
+const AddContainer = styled.div``;
 
-const SubmitInput = styled.input``;
+const StageContainer = styled.div`
+border: solid black 3px;
+`;
+
+const IconStyle = styled.div``;
 
 const AddPresenter = () => {
-    let paths = {
-        lat: [],
-        lng: []
+    const [part, setPart] = useState("path");
+
+    const movePath = () => {
+        setPart("path")
     };
-    const pathAdd = (p) => {
-        paths['lat'].push(p[0]);
-        paths['lng'].push(p[1]);
-    }
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        await dbService.collection("path").add(paths);
-        paths = {
-            lat: [],
-            lng: []
-        };
-    }
+    const moveImg = () => {
+        setPart("image")
+    };
+    const moveStory = () => {
+        setPart("story")
+    };
+
     return (
         <>
             <Helmet>
                 <title>Add | BYHOON</title>
             </Helmet>
-            <MapContainer>
-                <RenderAfterNavermapsLoaded
-                    ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
-                >
-                    <NaverMap
-                        mapDivId={'maps-getting-started-uncontrolled'}
-                        style={{
-                            width: '50%',
-                            height: '70vh',
-                        }}
-                        defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
-                        defaultZoom={12}
-                        onClick={(e) => {
-                            pathAdd([e.coord.lat(), e.coord.lng()]);
-                        }}
-                    >
-                    </NaverMap>
-                </RenderAfterNavermapsLoaded>
-            </MapContainer>
-            <SubmitForm onSubmit={onSubmit}>
-                <SubmitInput type="submit" value="&rarr;" />
-            </SubmitForm>
+            <GridContainer>
+                <StageContainer>
+                    <IconStyle><Icon icon="emojione:keycap-1" /></IconStyle>
+                    <IconStyle><Icon icon="emojione:keycap-2" /></IconStyle>
+                    <IconStyle><Icon icon="emojione:keycap-3" /></IconStyle>
+                </StageContainer>
+                <AddContainer>
+                    {part === "path" ? <Addpath moveImg={moveImg} movePath={movePath} /> :
+                        part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} /> :
+                            part === "story" ? <Addstory moveImg={moveImg} /> : null}
+                </AddContainer>
+            </GridContainer>
         </>
-
     )
 };
 
