@@ -6,6 +6,8 @@ import Addimage from "Components/Add/Addimage";
 import Addstory from "Components/Add/Addstory";
 import { Icon } from "@iconify/react";
 
+import { dbService } from "fbase";
+
 const GridContainer = styled.div`
     display: grid;
     grid-template-columns: minmax(100px, 200px) minmax(1000px, 1fr);
@@ -19,6 +21,10 @@ border: solid black 3px;
 
 const IconStyle = styled.div``;
 
+// const SubmitForm = styled.form``;
+
+// const SubmitInput = styled.input``;
+
 const AddPresenter = () => {
     const [part, setPart] = useState("path");
 
@@ -31,7 +37,6 @@ const AddPresenter = () => {
     const moveStory = () => {
         setPart("story")
     };
-
     return (
         <>
             <Helmet>

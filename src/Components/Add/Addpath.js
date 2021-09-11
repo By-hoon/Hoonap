@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { dbService } from "fbase";
-import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
+import { RenderAfterNavermapsLoaded, NaverMap, Polygon } from 'react-naver-maps';
 import { Icon } from "@iconify/react";
+
+import { dbService } from "fbase";
 
 const MapContainer = styled.div`
     display: flex;
     justify-content: center;
 `
-
-const SubmitForm = styled.form``;
-
-const SubmitInput = styled.input``;
 
 const IconStyle = styled.div`
     color: black;
@@ -31,7 +28,24 @@ const MoveLink = styled(Link)`
     height: 30px;
 `;
 
+const SubmitForm = styled.form``;
+
+const SubmitInput = styled.input``;
+
+const DeleteBtn = styled.span``;
+
 const Addpath = (props) => {
+    const [path, setPath] = useState([]);
+    useEffect(() => {
+        dbService.collection("temp_path").onSnapshot((snapshot) => {
+            const pathArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setPath(pathArray);
+        });
+    }, []);
+
     let paths = {
         lat: [],
         lng: []
@@ -42,12 +56,14 @@ const Addpath = (props) => {
     }
     const onSubmit = async (event) => {
         event.preventDefault();
-        await dbService.collection("path").add(paths);
-        paths = {
-            lat: [],
-            lng: []
-        };
+        await dbService.collection("temp_path").add(paths);
     }
+    const onDeleteClick = async () => {
+        const ok = window.confirm("Are you sure you want to delete this polygon?");
+        if (ok) {
+            await dbService.doc(`temp_path/${path[0].id}`).delete();
+        }
+    };
     return (
         <>
             <MapContainer>
@@ -66,12 +82,32 @@ const Addpath = (props) => {
                             pathAdd([e.coord.lat(), e.coord.lng()]);
                         }}
                     >
+                        {path ? path.map(pa => {
+                            let tempPaths = [];
+                            for (let i = 0; i < pa.lat.length; i++) {
+                                tempPaths.push({ lat: pa.lat[i], lng: pa.lng[i] })
+                            };
+                            return (
+                                <Polygon
+                                    key={pa.id}
+                                    paths={
+                                        [tempPaths]
+                                    }
+                                    fillColor={'#ff0000'}
+                                    fillOpacity={0.3}
+                                    strokeColor={'#ff0000'}
+                                    strokeOpacity={0.6}
+                                    strokeWeight={3}
+                                />
+                            )
+                        }) : null}
                     </NaverMap>
                 </RenderAfterNavermapsLoaded>
             </MapContainer>
             <SubmitForm onSubmit={onSubmit}>
-                <SubmitInput type="submit" />
+                <SubmitInput type="submit" value="미리보기" />
             </SubmitForm>
+            <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
             <LinkContainer>
                 <MoveLink to="/add/image">
                     <IconStyle>

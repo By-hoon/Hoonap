@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { dbService } from "fbase";
 import { Icon } from "@iconify/react";
+
+import { dbService } from "fbase";
 
 const IconStyle = styled.div`
     color: black;
@@ -20,6 +21,10 @@ const MoveLink = styled(Link)`
     width: 30px;
     height: 30px;
 `;
+
+const SubmitForm = styled.form``;
+
+const SubmitInput = styled.input``;
 
 const AddStory = (props) => {
     return (
