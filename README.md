@@ -12,6 +12,10 @@
 - Painting
 - About
 - Board
+- Add
+    - _path_
+    - _image_
+    - _story_
 
 ## Screen Details
 *** 
@@ -23,6 +27,7 @@ _all screens have header and footer_
 
 ### Toyprojects
 - Projects Slideshow
+    - Each shows are clickable.
 
 ### Blog
 -
@@ -32,10 +37,17 @@ _all screens have header and footer_
     - polygon (click, mouseover)
 
 ### Painting
--
+- 
 
 ### About
 -
 
 ### Board
 -
+
+### Add
+- Step1 (path)
+
+- Step2 (image)
+
+- Step3 (story)
