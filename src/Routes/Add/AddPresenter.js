@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
 import styled from "styled-components";
 import Helmet from "react-helmet";
@@ -6,6 +6,8 @@ import Addpath from "Components/Add/Addpath";
 import Addimage from "Components/Add/Addimage";
 import Addstory from "Components/Add/Addstory";
 import { Icon } from "@iconify/react";
+
+import { dbService } from "fbase";
 
 const GridContainer = styled.div`
     display: grid;
@@ -32,9 +34,46 @@ const IconMenu = styled.span`
     margin-left: 15px;
     font-size: 33px;
 `;
+//------------------------------------SAVE ZONE
+const SaveContainer = styled.div``;
+
+//------------------------------------IMAGE PART
+const ImagesContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 16px;
+`;
+
+const ImageDetail = styled.div`
+    display: inline-flex;
+    border-radius: 2;
+    border: 1px solid #eaeaea;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    width: 100px;
+    height: 100px;
+    padding: 4px;
+    box-sizing: border-box;
+`;
+
+const ImageInner = styled.div`
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+`;
+
+const Img = styled.img`
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+`;
+//---------------------------------------------------------------
+
 
 const AddPresenter = withRouter(({ location: { pathname } }) => {
     const [part, setPart] = useState("path");
+    const [images, setImages] = useState([]);
 
     const movePath = () => {
         setPart("path")
@@ -45,6 +84,17 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
     const moveStory = () => {
         setPart("story")
     };
+
+    useEffect(() => {
+        dbService.collection("temp_image").onSnapshot((snapshot) => {
+            const imageArray = snapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setImages(imageArray);
+        });
+    }, []);
+
+
     return (
         <>
             <Helmet>
@@ -70,6 +120,19 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                         part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} /> :
                             part === "story" ? <Addstory moveImg={moveImg} /> : null}
                 </AddContainer>
+                <SaveContainer>
+                    <ImagesContainer>
+                        {images.length > 0 ? (
+                            images[0].id.map((imgId, index) => (
+                                <ImageDetail key={imgId}>
+                                    <ImageInner>
+                                        <Img src={images[0].attachmentArray[index]} />
+                                    </ImageInner>
+                                </ImageDetail>
+                            ))
+                        ) : null}
+                    </ImagesContainer>
+                </ SaveContainer>
             </GridContainer>
         </>
     )

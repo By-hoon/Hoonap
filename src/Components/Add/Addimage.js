@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { dbService } from "fbase";
 import { Icon } from "@iconify/react";
+
+import MyDropzone from "../Dragdrop";
 
 const IconStyle = styled.div`
     color: black;
@@ -21,10 +22,11 @@ const MoveLink = styled(Link)`
     height: 30px;
 `;
 
+
 const Addimage = (props) => {
     return (
         <>
-            <h3>Image</h3>
+            <MyDropzone />
             <LinkContainer>
                 <MoveLink to="/add/path">
                     <IconStyle>
