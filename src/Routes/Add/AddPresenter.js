@@ -35,7 +35,9 @@ const IconMenu = styled.span`
     font-size: 33px;
 `;
 //------------------------------------SAVE ZONE
-const SaveContainer = styled.div``;
+const SaveContainer = styled.div`
+    margin-left: 40px;
+`;
 
 //------------------------------------IMAGE PART
 const ImagesContainer = styled.div`
@@ -69,11 +71,17 @@ const Img = styled.img`
     height: 100%;
 `;
 //---------------------------------------------------------------
+const SubmitForm = styled.form``;
 
+const SubmitInput = styled.input``;
 
 const AddPresenter = withRouter(({ location: { pathname } }) => {
     const [part, setPart] = useState("path");
     const [images, setImages] = useState([]);
+
+    const [mainPath, setMainPath] = useState([]);
+    const [mainImages, setMainImages] = useState([]);
+    const [mainStory, setMainStory] = useState([]);
 
     const movePath = () => {
         setPart("path")
@@ -94,6 +102,37 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
         });
     }, []);
 
+    const onSubmit = (event) => {
+        event.preventDefault();
+        dbService.collection("temp_path").onSnapshot((snapshot) => {
+            const pathArray = snapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setMainPath(pathArray);
+        });
+        dbService.collection("temp_image").onSnapshot((snapshot) => {
+            const imageArray = snapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setMainImages(imageArray);
+        });
+        dbService.collection("temp_story").onSnapshot((snapshot) => {
+            const storyArray = snapshot.docs.map((doc) => ({
+                ...doc.data(),
+            }));
+            setMainStory(storyArray);
+        });
+        const mainObj = {
+            mainPath,
+            mainImages,
+            mainStory,
+        }
+        mainSave(mainObj);
+    }
+
+    const mainSave = async (mainObj) => {
+        await dbService.collection("story_box").add(mainObj);
+    }
 
     return (
         <>
@@ -132,6 +171,10 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                             ))
                         ) : null}
                     </ImagesContainer>
+                    {part === "story" ?
+                        <SubmitForm onSubmit={onSubmit}>
+                            <SubmitInput type="submit" value="스토리 저장" />
+                        </SubmitForm> : null}
                 </ SaveContainer>
             </GridContainer>
         </>
