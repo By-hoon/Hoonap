@@ -77,7 +77,7 @@ const MyDropzone = () => {
                 attachmentID.push(uuidv4());
                 if (attachmentArray.length === files.length) {
                     const imagesObj = {
-                        id: attachmentID,
+                        imageId: attachmentID,
                         attachmentArray,
                     };
                     await dbService.collection("temp_image").add(imagesObj);
