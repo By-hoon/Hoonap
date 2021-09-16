@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router";
+import { Redirect, withRouter, useHistory } from "react-router";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import Addpath from "Components/Add/Addpath";
@@ -76,8 +76,8 @@ const SubmitForm = styled.form``;
 const SubmitInput = styled.input``;
 
 const AddPresenter = withRouter(({ location: { pathname } }) => {
+    const history = useHistory();
     const [part, setPart] = useState("path");
-    const [images, setImages] = useState([]);
 
     const [mainPath, setMainPath] = useState([]);
     const [mainImages, setMainImages] = useState([]);
@@ -92,36 +92,35 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
     const moveStory = () => {
         setPart("story")
     };
-
     useEffect(() => {
-        dbService.collection("temp_image").onSnapshot((snapshot) => {
-            const imageArray = snapshot.docs.map((doc) => ({
-                ...doc.data(),
-            }));
-            setImages(imageArray);
-        });
-    }, []);
-
-    const onSubmit = (event) => {
-        event.preventDefault();
         dbService.collection("temp_path").onSnapshot((snapshot) => {
             const pathArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
                 ...doc.data(),
             }));
             setMainPath(pathArray);
         });
         dbService.collection("temp_image").onSnapshot((snapshot) => {
             const imageArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
                 ...doc.data(),
             }));
             setMainImages(imageArray);
         });
         dbService.collection("temp_story").onSnapshot((snapshot) => {
             const storyArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
                 ...doc.data(),
             }));
             setMainStory(storyArray);
         });
+        return () => {
+            console.log("return");
+        }
+    }, []);
+
+    const onSubmit = (event) => {
+        event.preventDefault();
         const mainObj = {
             mainPath,
             mainImages,
@@ -132,6 +131,11 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
 
     const mainSave = async (mainObj) => {
         await dbService.collection("story_box").add(mainObj);
+        await dbService.doc(`temp_path/${mainPath[0].id}`).delete();
+        await dbService.doc(`temp_image/${mainImages[0].id}`).delete();
+        await dbService.doc(`temp_story/${mainStory[0].id}`).delete();
+
+        history.push('/');
     }
 
     return (
@@ -161,11 +165,11 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                 </AddContainer>
                 <SaveContainer>
                     <ImagesContainer>
-                        {images.length > 0 ? (
-                            images[0].id.map((imgId, index) => (
+                        {mainImages.length > 0 ? (
+                            mainImages[0].imageId.map((imgId, index) => (
                                 <ImageDetail key={imgId}>
                                     <ImageInner>
-                                        <Img src={images[0].attachmentArray[index]} />
+                                        <Img src={mainImages[0].attachmentArray[index]} />
                                     </ImageInner>
                                 </ImageDetail>
                             ))
