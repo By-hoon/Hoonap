@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Redirect, withRouter, useHistory } from "react-router";
 import styled from "styled-components";
 import Helmet from "react-helmet";
@@ -77,6 +77,8 @@ const SubmitInput = styled.input``;
 
 const AddPresenter = withRouter(({ location: { pathname } }) => {
     const history = useHistory();
+    const isMounted = useRef(false);
+
     const [part, setPart] = useState("path");
 
     const [mainPath, setMainPath] = useState([]);
@@ -93,30 +95,37 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
         setPart("story")
     };
     useEffect(() => {
+        isMounted.current = true;
+
         dbService.collection("temp_path").onSnapshot((snapshot) => {
             const pathArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setMainPath(pathArray);
+            if (isMounted.current) {
+                setMainPath(pathArray);
+            }
         });
         dbService.collection("temp_image").onSnapshot((snapshot) => {
             const imageArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setMainImages(imageArray);
+            if (isMounted.current) {
+                setMainImages(imageArray);
+            }
         });
         dbService.collection("temp_story").onSnapshot((snapshot) => {
             const storyArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setMainStory(storyArray);
+            if (isMounted.current) {
+                setMainStory(storyArray);
+            }
         });
-        return () => {
-            console.log("return");
-        }
+
+        return () => (isMounted.current = false);
     }, []);
 
     const onSubmit = (event) => {
@@ -134,7 +143,6 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
         await dbService.doc(`temp_path/${mainPath[0].id}`).delete();
         await dbService.doc(`temp_image/${mainImages[0].id}`).delete();
         await dbService.doc(`temp_story/${mainStory[0].id}`).delete();
-
         history.push('/');
     }
 

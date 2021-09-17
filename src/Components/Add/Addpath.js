@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { RenderAfterNavermapsLoaded, NaverMap, Polygon } from 'react-naver-maps';
@@ -46,17 +46,25 @@ const SubmitInput = styled.input``;
 const DeleteBtn = styled.span``;
 
 const Addpath = (props) => {
+    const isMounted = useRef(false);
+
     const [path, setPath] = useState([]);
     const [preview, setPreview] = useState("off");
     const [click, setClick] = useState(false);
     useEffect(() => {
+        isMounted.current = true;
         dbService.collection("temp_path").onSnapshot((snapshot) => {
             const pathArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
-            setPath(pathArray);
+            if (isMounted.current) {
+                setPath(pathArray);
+            }
         });
+
+        return () => (isMounted.current = false);
+
     }, []);
 
     let paths = {
