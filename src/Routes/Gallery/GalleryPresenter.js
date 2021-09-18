@@ -13,13 +13,63 @@ const MapContainer = styled.div`
     justify-content: flex-start;
 `
 
+//------------------------------------IMAGE PART
+const PreviewContainer = styled.div`
+    position: absolute;
+    top:130px;
+    right:0;
+    width: 45%;
+    height: 85vh;
+    box-shadow: 
+    0 0 0 3px rgba(71, 154, 191, 0.1) inset,
+    0 0 0 10000px rgba(0, 0, 0, 0.637) inset;
+    z-index: 10;
+`
+
+const ImagesContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 16px;
+`;
+
+const ImageDetail = styled.div`
+    display: inline-flex;
+    border-radius: 2;
+    border: 1px solid #eaeaea;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    width: 300px;
+    height: 300px;
+    padding: 4px;
+    box-sizing: border-box;
+`;
+
+const ImageInner = styled.div`
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+`;
+
+const Img = styled.img`
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+`;
+//---------------------------------------------------------------
+
 const GalleryPresenter = () => {
     const [fillColor, setFillColor] = useState({});
     const [display, setDisplay] = useState({});
+
+    const [nowId, setNowId] = useState("");
     const [path, setPath] = useState([]);
+    const [images, setImages] = useState([]);
+    const [story, setStory] = useState([]);
+
     useEffect(() => {
-        dbService.collection("path").onSnapshot((snapshot) => {
-            const pathArray = snapshot.docs.map((doc) => ({
+        dbService.collection("story_box").onSnapshot((snapshot) => {
+            const boxArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
             }));
@@ -39,33 +89,39 @@ const GalleryPresenter = () => {
             displayArray.forEach(element => {
                 displayObj[element.id] = 'off';
             });
-
-            setPath(pathArray);
+            //setPath
+            //setImage
+            //setStory
             setFillColor(fcObj);
             setDisplay(displayObj);
         });
+
     }, []);
 
     const fillColorChange = (id) => {
         let fcObj = { ...fillColor };
         fcObj[id] = "#004ff0"
+        setNowId(id);
         setFillColor(fcObj);
     };
     const fillColorBack = (id) => {
         let fcObj = { ...fillColor };
         fcObj[id] = '#ff0000';
+        setNowId(id);
         setFillColor(fcObj);
     };
 
     const displayNone = (id) => {
         let displayObj = { ...display };
         displayObj[id] = "off"
+        setNowId(id);
         setDisplay(displayObj);
     }
 
     const displayOver = (id) => {
         let displayObj = { ...display };
         displayObj[id] = "on"
+        setNowId(id);
         setDisplay(displayObj);
     }
     return (
@@ -107,7 +163,24 @@ const GalleryPresenter = () => {
                     </NaverMap>
                 </RenderAfterNavermapsLoaded>
             </MapContainer>
-            {display === 'on' ? <Preview /> : null}
+            {display[nowId] === 'on' ?
+                (
+                    <>
+                        <PreviewContainer>
+                            <ImagesContainer>
+                                {images.length > 0 ? (
+                                    images[0].imageId.map((imgId, index) => (
+                                        <ImageDetail key={imgId}>
+                                            <ImageInner>
+                                                <Img src={images[0].attachmentArray[index]} />
+                                            </ImageInner>
+                                        </ImageDetail>
+                                    ))
+                                ) : null}
+                            </ImagesContainer>
+                        </PreviewContainer>
+                    </>
+                ) : null}
         </>
 
     )
