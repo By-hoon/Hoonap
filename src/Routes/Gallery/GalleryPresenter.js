@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { element } from "prop-types";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
@@ -65,7 +65,6 @@ const GalleryPresenter = () => {
     const [nowId, setNowId] = useState("");
     const [path, setPath] = useState([]);
     const [images, setImages] = useState([]);
-    const [story, setStory] = useState([]);
 
     useEffect(() => {
         dbService.collection("story_box").onSnapshot((snapshot) => {
@@ -73,25 +72,29 @@ const GalleryPresenter = () => {
                 id: doc.id,
                 ...doc.data(),
             }));
-            const fcArray = snapshot.docs.map((doc) => ({
-                id: doc.id,
-            }));
-            const displayArray = snapshot.docs.map((doc) => ({
-                id: doc.id,
-            }));
+
+            const pathArray = [];
+            const imageArray = [];
+
+            boxArray.forEach(box => {
+                pathArray.push(box.mainPath);
+                imageArray.push(box.mainImages);
+            });
+            //TODO: image배열에 path의 ID 정보를 넣어주기.
+            //---------------------------------------------------
 
             let fcObj = {};
             let displayObj = {};
 
-            fcArray.forEach(element => {
-                fcObj[element.id] = '#ff0000';
-            });
-            displayArray.forEach(element => {
-                displayObj[element.id] = 'off';
-            });
-            //setPath
-            //setImage
-            //setStory
+            pathArray.forEach(element => {
+                fcObj[element[0].id] = '#ff0000';
+                displayObj[element[0].id] = 'off';
+            })
+
+            //------------------------------------------
+            console.log(imageArray);
+            setPath(pathArray);
+            setImages(imageArray);
             setFillColor(fcObj);
             setDisplay(displayObj);
         });
@@ -144,18 +147,18 @@ const GalleryPresenter = () => {
                     >
                         {path ? path.map(pa => {
                             let paths = [];
-                            for (let i = 0; i < pa.lat.length; i++) {
-                                paths.push({ lat: pa.lat[i], lng: pa.lng[i] })
+                            for (let i = 0; i < pa[0].lat.length; i++) {
+                                paths.push({ lat: pa[0].lat[i], lng: pa[0].lng[i] })
                             };
                             return (
                                 <Poly
-                                    key={pa.id}
-                                    polyId={pa.id}
+                                    key={pa[0].id}
+                                    polyId={pa[0].id}
                                     fillColorChange={fillColorChange}
                                     fillColorBack={fillColorBack}
                                     displayNone={displayNone}
                                     displayOver={displayOver}
-                                    fillColor={fillColor[pa.id]}
+                                    fillColor={fillColor[pa[0].id]}
                                     paths={paths}
                                 />
                             )
@@ -168,11 +171,12 @@ const GalleryPresenter = () => {
                     <>
                         <PreviewContainer>
                             <ImagesContainer>
+
                                 {images.length > 0 ? (
-                                    images[0].imageId.map((imgId, index) => (
+                                    images[0][0].imageId.map((imgId, index) => (
                                         <ImageDetail key={imgId}>
                                             <ImageInner>
-                                                <Img src={images[0].attachmentArray[index]} />
+                                                <Img src={images[0][0].attachmentArray[index]} />
                                             </ImageInner>
                                         </ImageDetail>
                                     ))
