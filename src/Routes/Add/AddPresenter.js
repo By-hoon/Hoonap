@@ -34,10 +34,21 @@ const IconMenu = styled.span`
     margin-left: 15px;
     font-size: 33px;
 `;
+
 //------------------------------------SAVE ZONE
+// TODO: 각 요소가 저장되었는지 확인할 수 있는 체킹 박스. 클릭시 자세한 저장 내용 확인.
 const SaveContainer = styled.div`
     margin-left: 40px;
 `;
+
+const SaveSpan = styled.div``;
+
+const SubmitForm = styled.form``;
+
+const SubmitInput = styled.input``;
+
+//------------------------------------PATH PART
+const PathContainer = styled.div``;
 
 //------------------------------------IMAGE PART
 const ImagesContainer = styled.div`
@@ -70,10 +81,12 @@ const Img = styled.img`
     width: 100%;
     height: 100%;
 `;
-//---------------------------------------------------------------
-const SubmitForm = styled.form``;
 
-const SubmitInput = styled.input``;
+//------------------------------------STORY PART
+const StoryContainer = styled.div``;
+
+
+//---------------------------------------------------------------
 
 const AddPresenter = withRouter(({ location: { pathname } }) => {
     const history = useHistory();
@@ -128,21 +141,26 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
         return () => (isMounted.current = false);
     }, []);
 
+
     const onSubmit = (event) => {
         event.preventDefault();
+        const ids = [mainPath[0].id, mainImages[0].id, mainStory[0].id]
+        delete mainPath[0].id;
+        delete mainImages[0].id;
+        delete mainStory[0].id;
         const mainObj = {
             mainPath,
             mainImages,
             mainStory,
         }
-        mainSave(mainObj);
+        mainSave(mainObj, ids);
     }
 
-    const mainSave = async (mainObj) => {
+    const mainSave = async (mainObj, ids) => {
         await dbService.collection("story_box").add(mainObj);
-        await dbService.doc(`temp_path/${mainPath[0].id}`).delete();
-        await dbService.doc(`temp_image/${mainImages[0].id}`).delete();
-        await dbService.doc(`temp_story/${mainStory[0].id}`).delete();
+        await dbService.doc(`temp_path/${ids[0]}`).delete();
+        await dbService.doc(`temp_image/${ids[1]}`).delete();
+        await dbService.doc(`temp_story/${ids[2]}`).delete();
         history.push('/');
     }
 
