@@ -64,7 +64,8 @@ const GalleryPresenter = () => {
 
     const [nowId, setNowId] = useState("");
     const [path, setPath] = useState([]);
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState({});
+    const [ids, setIds] = useState([]);
 
     useEffect(() => {
         dbService.collection("story_box").onSnapshot((snapshot) => {
@@ -74,27 +75,27 @@ const GalleryPresenter = () => {
             }));
 
             const pathArray = [];
-            const imageArray = [];
-
-            boxArray.forEach(box => {
-                pathArray.push(box.mainPath);
-                imageArray.push(box.mainImages);
-            });
-            //TODO: image배열에 path의 ID 정보를 넣어주기.
-            //---------------------------------------------------
+            const imageObj = {};
+            const idArray = [];
 
             let fcObj = {};
             let displayObj = {};
 
-            pathArray.forEach(element => {
-                fcObj[element[0].id] = '#ff0000';
-                displayObj[element[0].id] = 'off';
-            })
-
-            //------------------------------------------
-            console.log(imageArray);
+            boxArray.forEach(box => {
+                pathArray.push(box.mainPath);
+                imageObj[box.id] = {
+                    attachmentArray: box.mainImages[0].attachmentArray,
+                    imageId: box.mainImages[0].imageId,
+                }
+                idArray.push(box.id);
+                fcObj[box.id] = '#ff0000';
+                displayObj[box.id] = 'off';
+            });
+            //TODO: image배열에 path의 ID 정보를 넣어주기.
+            //---------------------------------------------------
             setPath(pathArray);
-            setImages(imageArray);
+            setImages(imageObj);
+            setIds(idArray);
             setFillColor(fcObj);
             setDisplay(displayObj);
         });
@@ -145,20 +146,20 @@ const GalleryPresenter = () => {
                         defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
                         defaultZoom={12}
                     >
-                        {path ? path.map(pa => {
+                        {path ? path.map((pa, index) => {
                             let paths = [];
                             for (let i = 0; i < pa[0].lat.length; i++) {
                                 paths.push({ lat: pa[0].lat[i], lng: pa[0].lng[i] })
                             };
                             return (
                                 <Poly
-                                    key={pa[0].id}
-                                    polyId={pa[0].id}
+                                    key={ids[index]}
+                                    polyId={ids[index]}
                                     fillColorChange={fillColorChange}
                                     fillColorBack={fillColorBack}
                                     displayNone={displayNone}
                                     displayOver={displayOver}
-                                    fillColor={fillColor[pa[0].id]}
+                                    fillColor={fillColor[ids[index]]}
                                     paths={paths}
                                 />
                             )
@@ -171,16 +172,15 @@ const GalleryPresenter = () => {
                     <>
                         <PreviewContainer>
                             <ImagesContainer>
-
-                                {images.length > 0 ? (
-                                    images[0][0].imageId.map((imgId, index) => (
+                                {
+                                    images[nowId].imageId.map((imgId, index) => (
                                         <ImageDetail key={imgId}>
                                             <ImageInner>
-                                                <Img src={images[0][0].attachmentArray[index]} />
+                                                <Img src={images[nowId].attachmentArray[index]} />
                                             </ImageInner>
                                         </ImageDetail>
                                     ))
-                                ) : null}
+                                }
                             </ImagesContainer>
                         </PreviewContainer>
                     </>
