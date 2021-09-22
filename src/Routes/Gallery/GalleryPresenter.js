@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropTypes, { element } from "prop-types";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 import { RenderAfterNavermapsLoaded, NaverMap } from 'react-naver-maps';
@@ -59,6 +59,8 @@ const Img = styled.img`
 //---------------------------------------------------------------
 
 const GalleryPresenter = () => {
+    const history = useHistory();
+
     const [fillColor, setFillColor] = useState({});
     const [display, setDisplay] = useState({});
 
@@ -91,7 +93,6 @@ const GalleryPresenter = () => {
                 fcObj[box.id] = '#ff0000';
                 displayObj[box.id] = 'off';
             });
-            //TODO: image배열에 path의 ID 정보를 넣어주기.
             //---------------------------------------------------
             setPath(pathArray);
             setImages(imageObj);
@@ -128,6 +129,12 @@ const GalleryPresenter = () => {
         setNowId(id);
         setDisplay(displayObj);
     }
+
+    const clickPoly = () => {
+        //TODO: story 글 만들고 그 링크 넣기.
+        history.push('/');
+    }
+
     return (
         <>
             <Helmet>
@@ -153,7 +160,7 @@ const GalleryPresenter = () => {
                             };
                             return (
                                 <Poly
-                                    key={ids[index]}
+                                    key={index}
                                     polyId={ids[index]}
                                     fillColorChange={fillColorChange}
                                     fillColorBack={fillColorBack}
@@ -173,13 +180,15 @@ const GalleryPresenter = () => {
                         <PreviewContainer>
                             <ImagesContainer>
                                 {
-                                    images[nowId].imageId.map((imgId, index) => (
-                                        <ImageDetail key={imgId}>
-                                            <ImageInner>
-                                                <Img src={images[nowId].attachmentArray[index]} />
-                                            </ImageInner>
-                                        </ImageDetail>
-                                    ))
+                                    images[nowId].imageId.map((imgId, index) => {
+                                        return (
+                                            <ImageDetail key={imgId}>
+                                                <ImageInner>
+                                                    <Img src={images[nowId].attachmentArray[index]} />
+                                                </ImageInner>
+                                            </ImageDetail>
+                                        )
+                                    })
                                 }
                             </ImagesContainer>
                         </PreviewContainer>
