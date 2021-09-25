@@ -13,6 +13,9 @@ class Poly extends Component {
         this.props.fillColorBack(this.props.polyId)
         this.props.displayNone(this.props.polyId)
     }
+    mouseClick = () => {
+        this.props.moveStory(this.props.polyId)
+    }
     render() {
         return (
             <Polygon
@@ -27,6 +30,7 @@ class Poly extends Component {
                 strokeWeight={3}
                 onMouseover={this.mouseOverHandle}
                 onMouseout={this.mouseOutHandle}
+                onClick={this.mouseClick}
             />
         )
     }

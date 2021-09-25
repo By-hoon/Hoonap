@@ -130,9 +130,9 @@ const GalleryPresenter = () => {
         setDisplay(displayObj);
     }
 
-    const clickPoly = () => {
+    const clickPoly = (id) => {
         //TODO: story 글 만들고 그 링크 넣기.
-        history.push('/');
+        history.push(`/story/${id}`);
     }
 
     return (
@@ -166,6 +166,7 @@ const GalleryPresenter = () => {
                                     fillColorBack={fillColorBack}
                                     displayNone={displayNone}
                                     displayOver={displayOver}
+                                    moveStory={clickPoly}
                                     fillColor={fillColor[ids[index]]}
                                     paths={paths}
                                 />
