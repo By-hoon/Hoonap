@@ -14,6 +14,7 @@ import Painting from "Routes/Painting";
 import About from "Routes/About";
 import Board from "Routes/Board";
 import Add from "Routes/Add";
+import Story from "Routes/Story";
 
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
@@ -32,6 +33,7 @@ export default () => (
                 <Route path="/toyprojects/hooflix" exact component={Hooflix} />
 
                 <Route path="/blog" exact component={Blog} />
+                <Route path="/blog/*" exact component={Story} />
                 <Route path="/gallery" exact component={Gallery} />
                 <Route path="/painting" exact component={Painting} />
                 <Route path="/about" exact component={About} />

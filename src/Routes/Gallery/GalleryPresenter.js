@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import Helmet from "react-helmet";
@@ -60,6 +60,7 @@ const Img = styled.img`
 
 const GalleryPresenter = () => {
     const history = useHistory();
+    const isMounted = useRef(false);
 
     const [fillColor, setFillColor] = useState({});
     const [display, setDisplay] = useState({});
@@ -70,6 +71,8 @@ const GalleryPresenter = () => {
     const [ids, setIds] = useState([]);
 
     useEffect(() => {
+        isMounted.current = true;
+
         dbService.collection("story_box").onSnapshot((snapshot) => {
             const boxArray = snapshot.docs.map((doc) => ({
                 id: doc.id,
@@ -101,6 +104,7 @@ const GalleryPresenter = () => {
             setDisplay(displayObj);
         });
 
+        return () => (isMounted.current = false);
     }, []);
 
     const fillColorChange = (id) => {
@@ -131,8 +135,7 @@ const GalleryPresenter = () => {
     }
 
     const clickPoly = (id) => {
-        //TODO: story 글 만들고 그 링크 넣기.
-        history.push(`/story/${id}`);
+        history.push(`/blog/${id}`);
     }
 
     return (
