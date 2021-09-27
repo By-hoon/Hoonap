@@ -37,6 +37,10 @@ const IconMenu = styled.span`
 
 //------------------------------------SAVE ZONE
 // TODO: 각 요소가 저장되었는지 확인할 수 있는 체킹 박스. 클릭시 자세한 저장 내용 확인.
+//       이미지 삭제 버튼 넣기.
+//       (이미지 삭제시 원래 이미지 배열 삭제 후 원하는 이미지 배열로 다시 저장)
+//       이미지 파트에서 타이틀 이미지 선택 넣기.
+//       Story 파트에서 타이틀 따로, 이미지별 코멘트 추가.
 const SaveContainer = styled.div`
     margin-left: 40px;
 `;
@@ -46,6 +50,22 @@ const SaveSpan = styled.div``;
 const SubmitForm = styled.form``;
 
 const SubmitInput = styled.input``;
+
+const FlashSpan = styled.span`
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 200px;
+    padding: 10px 20px;
+    border-radius: 10000px;
+    text-align: center;
+    animation: goAway 0.5s ease-in-out forwards;
+    animation-delay: 5s;
+    background-color: tomato;
+    color: white;
+`;
 
 //------------------------------------PATH PART
 const PathContainer = styled.div``;
@@ -144,16 +164,21 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        const ids = [mainPath[0].id, mainImages[0].id, mainStory[0].id]
-        delete mainPath[0].id;
-        delete mainImages[0].id;
-        delete mainStory[0].id;
-        const mainObj = {
-            mainPath,
-            mainImages,
-            mainStory,
+        if (mainPath.length > 0 && mainImages.length > 0 && mainStory.length > 0) {
+            const ids = [mainPath[0].id, mainImages[0].id, mainStory[0].id]
+            delete mainPath[0].id;
+            delete mainImages[0].id;
+            delete mainStory[0].id;
+            const mainObj = {
+                mainPath,
+                mainImages,
+                mainStory,
+            }
+            mainSave(mainObj, ids);
         }
-        mainSave(mainObj, ids);
+        else {
+            alert("error");
+        }
     }
 
     const mainSave = async (mainObj, ids) => {
@@ -169,6 +194,7 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
             <Helmet>
                 <title>Add | BYHOON</title>
             </Helmet>
+            {/* <FlashSpan>Error!</FlashSpan> */}
             <GridContainer>
                 <StageContainer>
                     <IconStyle current={pathname === "/add/path"}>
