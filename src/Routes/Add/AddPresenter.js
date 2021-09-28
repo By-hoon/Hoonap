@@ -12,7 +12,8 @@ import { dbService } from "fbase";
 const GridContainer = styled.div`
     display: grid;
     height: 80vh;
-    grid-template-columns: minmax(250px, 300px) minmax(600px, 3fr) minmax(400px, 2fr);
+    /* grid-template-columns: minmax(250px, 300px) minmax(600px, 3fr) minmax(400px, 2fr); */
+    grid-template-columns: minmax(250px, 300px) minmax(1000px, 1fr);
 `;
 
 const AddContainer = styled.div`
@@ -36,11 +37,14 @@ const IconMenu = styled.span`
 `;
 
 //------------------------------------SAVE ZONE
-// TODO: 각 요소가 저장되었는지 확인할 수 있는 체킹 박스. 클릭시 자세한 저장 내용 확인.
-//       이미지 삭제 버튼 넣기.
-//       (이미지 삭제시 원래 이미지 배열 삭제 후 원하는 이미지 배열로 다시 저장)
-//       이미지 파트에서 타이틀 이미지 선택 넣기.
-//       Story 파트에서 타이틀 따로, 이미지별 코멘트 추가.
+// TODO: 각 페이지별로 우측에 해당 페이지의 요소 선택 및 추가 실시간으로 볼 수 있게 넣기.
+//       Story 파트에서 타이틀 따로, 이미지별 코멘트 추가. 
+//       최종 확인 및 제출 page 만들기. 여기서 내용들 수정 가능하게
+
+//       Path 파트에서 지역 정보 띄워주고, 지역 수정해서 정보 입력할 수 있게 하기.
+//       Image 파트에서 image들의 순서 정할 수 있게 하기. 첫 번 째 사진이 title 사진.
+//       저장완료 flash 넣기
+
 const SaveContainer = styled.div`
     margin-left: 40px;
 `;
@@ -215,7 +219,7 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                         part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} /> :
                             part === "story" ? <Addstory moveImg={moveImg} /> : null}
                 </AddContainer>
-                <SaveContainer>
+                {/* <SaveContainer>
                     <ImagesContainer>
                         {mainImages.length > 0 ? (
                             mainImages[0].imageId.map((imgId, index) => (
@@ -231,7 +235,7 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                         <SubmitForm onSubmit={onSubmit}>
                             <SubmitInput type="submit" value="스토리 저장" />
                         </SubmitForm> : null}
-                </ SaveContainer>
+                </ SaveContainer> */}
             </GridContainer>
         </>
     )
