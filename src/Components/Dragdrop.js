@@ -45,6 +45,7 @@ const SubmitForm = styled.form``;
 
 const SubmitInput = styled.input``;
 
+//      TODO: 드랍존 가시적으로 보이게 수정
 
 const MyDropzone = () => {
     const [files, setFiles] = useState([]);
@@ -57,9 +58,6 @@ const MyDropzone = () => {
             })));
         }
     });
-    // useEffect(() => {
-    //     files.forEach(file => URL.revokeObjectURL(file.preview));
-    // }, [files]);
 
     const onSubmit = (event) => {
         event.preventDefault();
