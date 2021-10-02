@@ -44,6 +44,7 @@ const IconMenu = styled.span`
 //       Path 파트에서 지역 정보 띄워주고, 지역 수정해서 정보 입력할 수 있게 하기.
 //       Image 파트에서 image들의 순서 정할 수 있게 하기. 첫 번 째 사진이 title 사진.
 //       저장완료 flash 넣기
+//       각 단계에서 필요한 입력들이 다 수행되지 않았을 때, 이동버튼 비활성화 시키기.
 
 const SaveContainer = styled.div`
     margin-left: 40px;
@@ -75,36 +76,6 @@ const FlashSpan = styled.span`
 const PathContainer = styled.div``;
 
 //------------------------------------IMAGE PART
-const ImagesContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 16px;
-`;
-
-const ImageDetail = styled.div`
-    display: inline-flex;
-    border-radius: 2;
-    border: 1px solid #eaeaea;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    width: 100px;
-    height: 100px;
-    padding: 4px;
-    box-sizing: border-box;
-`;
-
-const ImageInner = styled.div`
-    display: flex;
-    min-width: 0;
-    overflow: hidden;
-`;
-
-const Img = styled.img`
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
-`;
 
 //------------------------------------STORY PART
 const StoryContainer = styled.div``;
@@ -219,8 +190,8 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                         part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} /> :
                             part === "story" ? <Addstory moveImg={moveImg} /> : null}
                 </AddContainer>
-                {/* <SaveContainer>
-                    <ImagesContainer>
+                <SaveContainer>
+                    {/* <ImagesContainer>
                         {mainImages.length > 0 ? (
                             mainImages[0].imageId.map((imgId, index) => (
                                 <ImageDetail key={imgId}>
@@ -230,12 +201,12 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                                 </ImageDetail>
                             ))
                         ) : null}
-                    </ImagesContainer>
+                    </ImagesContainer> */}
                     {part === "story" ?
                         <SubmitForm onSubmit={onSubmit}>
                             <SubmitInput type="submit" value="스토리 저장" />
                         </SubmitForm> : null}
-                </ SaveContainer> */}
+                </ SaveContainer>
             </GridContainer>
         </>
     )

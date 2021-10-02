@@ -45,7 +45,8 @@ const SubmitForm = styled.form``;
 
 const SubmitInput = styled.input``;
 
-//      TODO: 드랍존 가시적으로 보이게 수정
+//  TODO: 드랍존 가시적으로 보이게 수정
+//        image crop 기능 넣기 
 
 const MyDropzone = () => {
     const [files, setFiles] = useState([]);
