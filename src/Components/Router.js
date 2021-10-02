@@ -33,7 +33,7 @@ export default () => (
                 <Route path="/toyprojects/hooflix" exact component={Hooflix} />
 
                 <Route path="/blog" exact component={Blog} />
-                <Route path="/blog/*" exact component={Story} />
+                <Route path="/blog/:id" exact component={Story} />
                 <Route path="/gallery" exact component={Gallery} />
                 <Route path="/painting" exact component={Painting} />
                 <Route path="/about" exact component={About} />

@@ -1,10 +1,57 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import BlogPresenter from "./BlogPresenter";
 
+import { dbService } from "fbase";
+
 export default class extends React.Component {
+    state = {
+        titleIds: null,
+        titleImgs: null,
+        titleName: null,
+        error: null,
+        loading: true
+    };
+
+    async componentDidMount() {
+        try {
+            const idArray = [], imgArray = [], nameArray = [];
+            dbService.collection("story_box").onSnapshot((snapshot) => {
+                const boxArray = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                boxArray.forEach(box => {
+                    idArray.push(box.id);
+                    imgArray.push(box.mainImages[0].attachmentArray[0]);
+                    nameArray.push(box.mainStory[0].title)
+                });
+                this.setState({
+                    titleIds: idArray,
+                    titleImgs: imgArray,
+                    titleName: nameArray,
+                });
+            });
+        } catch {
+            this.setState({
+                error: "Can't find story information."
+            })
+        } finally {
+            this.setState({
+                loading: false
+            })
+        }
+    }
+
     render() {
+        const { titleImgs, titleIds, titleName, error, loading } = this.state;
         return (
-            <BlogPresenter />
+            <BlogPresenter
+                titleIds={titleIds}
+                titleImgs={titleImgs}
+                titleName={titleName}
+                error={error}
+                loading={loading}
+            />
         )
     }
 }

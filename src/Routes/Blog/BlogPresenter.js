@@ -1,29 +1,34 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Helmet from "react-helmet";
+
+import { dbService } from "fbase";
+
+const FlexContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+`;
 
 const FigContainer = styled.figure`
     position: relative;
     display: inline-block;
     margin: 20px;
-    max-width: 190px;
+    max-width: 250px;
+    height: 250px;
     width: 100%;
     color: #bbb;
     font-size: 16px;
     box-shadow: none !important;
-    -webkit-transform: translateZ(0);
     transform: translateZ(0);
 
     *,&:before, &:after{
-        -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        -webkit-transition: all 0.3s linear;
         transition: all 0.3s linear;
     }
 
     &:before, &:after{
-        -webkit-box-sizing: border-box;
         box-sizing: border-box;
         border-radius: 50%;
         content: '';
@@ -33,18 +38,10 @@ const FigContainer = styled.figure`
         left: 0px;
         right: 0px;
         z-index: -1;
-        border: 2px solid #bbb;
+        border: 2px solid;
         border-color: transparent #bbb;
     }
-    span{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        font-size: 4em;
-        z-index: 1;
-    }
+
     a{
         position: absolute;
         top: 0;
@@ -57,7 +54,6 @@ const FigContainer = styled.figure`
     &:hover{
         figcaption{
             opacity: 1;
-            -webkit-transform: translateX(0);
             transform: translateX(0);
         }
     }
@@ -69,12 +65,10 @@ const FigContainer = styled.figure`
     }
 
     &:hover:before{
-        -webkit-transform: rotate(45deg);
         transform: rotate(45deg);
     }
 
     &:hover:after{
-        -webkit-transform: rotate(-45deg);
         transform: rotate(-45deg);
     }
 
@@ -82,6 +76,8 @@ const FigContainer = styled.figure`
 
 const TitleImage = styled.img`
   max-width: 100%;
+  height: 100%;
+  object-fit: contain;
   backface-visibility: hidden;
   vertical-align: top;
   border-radius: 50%;
@@ -99,16 +95,46 @@ const FigCaption = styled.figcaption`
   border-radius: 50%;
 `;
 
-const BlogPresenter = () => (
-    <>
-        <Helmet>
-            <title>Blog | BYHOON</title>
-        </Helmet>
-        <FigContainer>
-            <TitleImage src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample19.jpg" alt="sq-sample19"></TitleImage>
-            <FigCaption><span>i</span></FigCaption>
-        </FigContainer>
-    </>
-);
+const StoryLink = styled(Link)`
+    color: #bbb;
+`
+
+const TitleSpan = styled.span`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    font-size: 3em;
+    z-index: 1;
+`;
+
+const BlogPresenter = ({ titleImgs, titleIds, titleName, loading, error }) => {
+    console.log(titleIds);
+    return (
+        <>
+            <Helmet>
+                <title>Blog | BYHOON</title>
+            </Helmet>
+            <FlexContainer>
+                {titleImgs ? (
+                    titleImgs.map((img, index) => {
+                        const storyLink = `/blog/${titleIds[index]}`;
+                        return (
+                            <FigContainer key={titleIds[index]}>
+                                <StoryLink to={storyLink}>
+                                    <TitleImage src={img} alt="titleImg"></TitleImage>
+                                    <FigCaption>
+                                        <TitleSpan>{titleName[index]}</TitleSpan>
+                                    </FigCaption>
+                                </StoryLink>
+                            </FigContainer>
+                        )
+                    })
+                ) : null
+                }
+            </FlexContainer>
+        </>
+    )
+};
 
 export default BlogPresenter;
