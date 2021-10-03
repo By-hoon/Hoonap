@@ -15,6 +15,7 @@ import About from "Routes/About";
 import Board from "Routes/Board";
 import Add from "Routes/Add";
 import Story from "Routes/Story";
+import Map from "Routes/Map";
 
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
@@ -35,6 +36,7 @@ export default () => (
                 <Route path="/blog" exact component={Blog} />
                 <Route path="/blog/:id" exact component={Story} />
                 <Route path="/gallery" exact component={Gallery} />
+                <Route path="/map" exact component={Map} />
                 <Route path="/painting" exact component={Painting} />
                 <Route path="/about" exact component={About} />
                 <Route path="/board" exact component={Board} />
