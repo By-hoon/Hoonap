@@ -43,7 +43,7 @@ const Mainmenu = () => (
             <MenuItem to="/toyprojects"><IconStyle><Icon icon="mdi:toy-brick" /></IconStyle></MenuItem>
             <MenuItem to="/blog"><IconStyle><Icon icon="brandico:blogger-rect" /></IconStyle></MenuItem>
             <MenuItem to="/gallery"><IconStyle><Icon icon="clarity:image-gallery-solid" /></IconStyle></MenuItem>
-            <MenuItem to="/painting"><IconStyle><Icon icon="map:art-gallery" /></IconStyle></MenuItem>
+            <MenuItem to="/map"><IconStyle><Icon icon="bx:bx-map" /></IconStyle></MenuItem>
             <MenuItem to="/about"><IconStyle><Icon icon="cib:about-me" /></IconStyle></MenuItem>
             <MenuItem to="/board"><IconStyle><Icon icon="mdi:bulletin-board" /></IconStyle></MenuItem>
         </MenuBox>

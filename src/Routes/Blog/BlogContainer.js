@@ -3,6 +3,8 @@ import BlogPresenter from "./BlogPresenter";
 
 import { dbService } from "fbase";
 
+//  TODO: 댓글 수 좋아요 수 등.. 타이틀 이미지 호버시 보이게 하기.
+
 export default class extends React.Component {
     state = {
         titleIds: null,

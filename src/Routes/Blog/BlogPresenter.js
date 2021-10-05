@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 
-import { dbService } from "fbase";
-
 const FlexContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -109,7 +107,6 @@ const TitleSpan = styled.span`
 `;
 
 const BlogPresenter = ({ titleImgs, titleIds, titleName, loading, error }) => {
-    console.log(titleIds);
     return (
         <>
             <Helmet>
