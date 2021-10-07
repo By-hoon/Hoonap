@@ -1,33 +1,89 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Helmet from "react-helmet";
 
 import { dbService } from "fbase";
 
-const ImageContainer = styled.div`
+const FlexContainer = styled.div`
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    margin-top: 16px;
 `;
 
-const Imagebox = styled.div`
-    display: inline-flex;
-    border-radius: 2;
-    border: 1px solid #eaeaea;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    width: 200px;
-    height: 200px;
-    padding: 4px;
-    box-sizing: border-box;
+const FigContainer = styled.figure`
+    position: relative;
+    display: inline-block;
+    margin: 20px;
+    max-width: 250px;
+    height: 250px;
+    width: 100%;
+    color: #bbb;
+    font-size: 16px;
+    box-shadow: none !important;
+    transform: translateZ(0);
+
+    *,&:before, &:after{
+        box-sizing: border-box;
+        transition: all 0.2s linear;
+    }
+
+    &:hover{
+        figcaption{
+            opacity: 1;
+        }
+    }
+
 `;
 
 const Img = styled.img`
-    object-fit: contain;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  backface-visibility: hidden;
+  /* vertical-align: top; */
+  padding: 10px;
+`;
+
+const FigCaption = styled.figcaption`
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* border-radius: 50%; */
+
+`;
+
+const SpanBox = styled.div`
     width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    z-index: 1;
+    padding: 10px;
+`;
+
+const PreviewSpan = styled.span`
+    font-size: 13px;
+    color: #dfe6e9;
+`;
+
+const ImageLink = styled(Link)``;
+
+const CommentLink = styled(Link)`
+    text-decoration: none;
+    
+    &:hover{
+        span{
+            color: #6c5ce7;
+        }
+    }
 `;
 
 const GalleryPresenter = () => {
@@ -63,14 +119,24 @@ const GalleryPresenter = () => {
             <Helmet>
                 <title>Gallery | BYHOON</title>
             </Helmet>
-            <ImageContainer>
+            <FlexContainer>
                 {images.length > 0 ?
                     (images.map((img) => (
-                        <Imagebox key={img.imgId}>
-                            <Img src={img.attachmentArray} />
-                        </Imagebox>
+                        <>
+                            <FigContainer key={img.imgId}>
+                                <ImageLink>
+                                    <Img src={img.attachmentArray} />
+                                    <FigCaption>
+                                        <SpanBox>
+                                            <CommentLink><PreviewSpan>3 likes</PreviewSpan></CommentLink>
+                                            <CommentLink><PreviewSpan>5 comments</PreviewSpan></CommentLink>
+                                        </SpanBox>
+                                    </FigCaption>
+                                </ImageLink>
+                            </FigContainer>
+                        </>
                     ))) : null}
-            </ImageContainer>
+            </FlexContainer>
         </>
 
     )
