@@ -74,6 +74,16 @@ const PreviewSpan = styled.span`
 
 const ImageLink = styled(Link)``;
 
+const CommentLink = styled(Link)`
+    text-decoration: none;
+    
+    &:hover{
+        span{
+            color: #6c5ce7;
+        }
+    }
+`;
+
 const StoryPresenter = ({ error, loading, storyObj }) => {
     // const [comments, setComments] = useState("");
     // const [likes, setLikes] = useState(false);
@@ -87,13 +97,14 @@ const StoryPresenter = ({ error, loading, storyObj }) => {
                 {storyObj ?
                     (storyObj.mainImages[0].attachmentArray.map((img, index) => (
                         <>
+                            {console.log(storyObj.mainImages[0].imageId[index])}
                             <FigContainer key={storyObj.mainImages[0].imageId[index]}>
                                 <ImageLink>
                                     <Img src={img} />
                                     <FigCaption>
                                         <SpanBox>
-                                            <PreviewSpan>3 likes</PreviewSpan>
-                                            <PreviewSpan>5 comments</PreviewSpan>
+                                            <CommentLink to="/"><PreviewSpan>3 likes</PreviewSpan></CommentLink>
+                                            <CommentLink to="/"><PreviewSpan>5 comments</PreviewSpan></CommentLink>
                                         </SpanBox>
                                     </FigCaption>
                                 </ImageLink>
