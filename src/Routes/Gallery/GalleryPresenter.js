@@ -33,7 +33,6 @@ const FigContainer = styled.figure`
             opacity: 1;
         }
     }
-
 `;
 
 const Img = styled.img`
@@ -86,6 +85,9 @@ const CommentLink = styled(Link)`
     }
 `;
 
+//      TODO: story id받아와서 ImageLInk에 넣어주기.
+//            imageId CommentLink에 넣어주기.
+
 const GalleryPresenter = () => {
     const history = useHistory();
     const isMounted = useRef(false);
@@ -122,19 +124,17 @@ const GalleryPresenter = () => {
             <FlexContainer>
                 {images.length > 0 ?
                     (images.map((img) => (
-                        <>
-                            <FigContainer key={img.imgId}>
-                                <ImageLink>
-                                    <Img src={img.attachmentArray} />
-                                    <FigCaption>
-                                        <SpanBox>
-                                            <CommentLink><PreviewSpan>3 likes</PreviewSpan></CommentLink>
-                                            <CommentLink><PreviewSpan>5 comments</PreviewSpan></CommentLink>
-                                        </SpanBox>
-                                    </FigCaption>
-                                </ImageLink>
-                            </FigContainer>
-                        </>
+                        <FigContainer key={img.imgId}>
+                            <ImageLink to="/">
+                                <Img src={img.attachmentArray} />
+                            </ImageLink>
+                            <FigCaption>
+                                <SpanBox>
+                                    <CommentLink to="/comment/id"><PreviewSpan>3 likes</PreviewSpan></CommentLink>
+                                    <CommentLink to="/comment/id"><PreviewSpan>5 comments</PreviewSpan></CommentLink>
+                                </SpanBox>
+                            </FigCaption>
+                        </FigContainer>
                     ))) : null}
             </FlexContainer>
         </>

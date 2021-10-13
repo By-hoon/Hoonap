@@ -95,22 +95,23 @@ const StoryPresenter = ({ error, loading, storyObj }) => {
             </Helmet>
             <FlexContainer>
                 {storyObj ?
-                    (storyObj.mainImages[0].attachmentArray.map((img, index) => (
-                        <>
-                            {console.log(storyObj.mainImages[0].imageId[index])}
-                            <FigContainer key={storyObj.mainImages[0].imageId[index]}>
-                                <ImageLink>
+                    (storyObj.mainImages[0].attachmentArray.map((img, index) => {
+                        const imgId = storyObj.mainImages[0].imageId[index];
+                        const idLink = `/comment/${imgId}`;
+                        return (
+                            <FigContainer key={imgId}>
+                                <ImageLink to={idLink}>
                                     <Img src={img} />
-                                    <FigCaption>
-                                        <SpanBox>
-                                            <CommentLink to="/"><PreviewSpan>3 likes</PreviewSpan></CommentLink>
-                                            <CommentLink to="/"><PreviewSpan>5 comments</PreviewSpan></CommentLink>
-                                        </SpanBox>
-                                    </FigCaption>
                                 </ImageLink>
+                                <FigCaption>
+                                    <SpanBox>
+                                        <CommentLink to={idLink}><PreviewSpan>3 likes</PreviewSpan></CommentLink>
+                                        <CommentLink to={idLink}><PreviewSpan>5 comments</PreviewSpan></CommentLink>
+                                    </SpanBox>
+                                </FigCaption>
                             </FigContainer>
-                        </>
-                    ))) : null}
+                        )
+                    })) : null}
             </FlexContainer>
         </>
     )
