@@ -67,13 +67,14 @@ const MyDropzone = () => {
         files.forEach(async (attachment) => {
             let attachmentUrl = "";
             if (attachment.preview !== "") {
+                const imageId = uuidv4();
                 const attachmentRef = storageService
                     .ref()
-                    .child(`storyimg/${uuidv4()}`);
+                    .child(`storyimg/${imageId}`);
                 const response = await attachmentRef.put(attachment);
                 attachmentUrl = await response.ref.getDownloadURL();
                 attachmentArray.push(attachmentUrl);
-                attachmentID.push(uuidv4());
+                attachmentID.push(imageId);
                 if (attachmentArray.length === files.length) {
                     const imagesObj = {
                         imageId: attachmentID,

@@ -8,6 +8,7 @@ import Addstory from "Components/Add/Addstory";
 import { Icon } from "@iconify/react";
 
 import { dbService } from "fbase";
+import { v4 as uuidv4 } from "uuid";
 
 const GridContainer = styled.div`
     display: grid;
@@ -148,6 +149,7 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                 mainPath,
                 mainImages,
                 mainStory,
+                storyTime: Date.now(),
             }
             mainSave(mainObj, ids);
         }
@@ -157,10 +159,21 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
     }
 
     const mainSave = async (mainObj, ids) => {
-        await dbService.collection("story_box").add(mainObj);
+        const storyId = uuidv4();
+        await dbService.collection(`story_box`).doc(`${storyId}`).set(mainObj);
         await dbService.doc(`temp_path/${ids[0]}`).delete();
         await dbService.doc(`temp_image/${ids[1]}`).delete();
         await dbService.doc(`temp_story/${ids[2]}`).delete();
+        imageSave(storyId);
+    }
+
+    const imageSave = (storyId) => {
+        mainImages[0].imageId.forEach(async (id, index) => {
+            await dbService.collection(`image_box`).doc(`${id}`).set({
+                attachmentId: mainImages[0].attachmentArray[index],
+                storyId,
+            });
+        })
         history.push('/');
     }
 
