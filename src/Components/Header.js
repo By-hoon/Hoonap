@@ -1,9 +1,10 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
-import logo from '../image/logo.jpg';
+import logo from '../image/LOGO.png';
 
 const Header = styled.header`
+    display: flex;
     width: 100%;
     height: 100px;
     border: 1px solid black;
@@ -17,8 +18,8 @@ const Linkbox = styled(Link)`
 const Logo = styled.img.attrs({
     src: logo,
 })`
-    width: 50px;
-    height: 30px;
+    width: 300px;
+    height: auto;
 `;
 
 const Addbtn = styled.span`
@@ -30,12 +31,9 @@ const Addbtn = styled.span`
     }
 `
 
-const SearchBtn = styled.input``;
-
 export default () => (
     <Header>
         <Linkbox to="/"><Logo /></Linkbox>
-        <SearchBtn></SearchBtn>
         <Linkbox to="/add/path"><Addbtn>Add Story</Addbtn></Linkbox>
     </Header>
 );
