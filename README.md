@@ -9,13 +9,15 @@
     - _hoowitter_
 - Blog
 - Gallery
-- Painting
+- Map
 - About
 - Board
 - Add
     - _path_
     - _image_
     - _story_
+- Story
+- Comment
 
 ## Screen Details
 *** 
@@ -30,14 +32,16 @@ _all screens have header and footer_
     - Each shows are clickable.
 
 ### Blog
--
+- Display each titles to clickable.
+
 
 ### Gallery
+- Display whole images 
+    - 
+
+### Map
 - Map (naver map api)
     - polygon (click, mouseover)
-
-### Painting
-- 
 
 ### About
 -
@@ -51,3 +55,8 @@ _all screens have header and footer_
 - Step2 (image)
 
 - Step3 (story)
+
+### Story
+
+
+### Comment
