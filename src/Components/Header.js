@@ -31,10 +31,20 @@ const Addbtn = styled.span`
     }
 `
 
+const Loginbtn = styled.span`
+    color: #0984e3;
+    &:hover{
+        cursor: pointer;
+        background-color: #74b9ff;
+        color: white;
+    }
+`
+
 export default () => (
     <Header>
         <Linkbox to="/"><Logo /></Linkbox>
         <Linkbox to="/add/path"><Addbtn>Add Story</Addbtn></Linkbox>
+        <Linkbox to="/login"><Loginbtn>Log in</Loginbtn></Linkbox>
     </Header>
 );
 

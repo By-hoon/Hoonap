@@ -18,6 +18,8 @@ import Story from "Routes/Story";
 import Map from "Routes/Map";
 import Comment from "Routes/Comment";
 
+import
+
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
 import Hooflix from "Routes/Hooflix";
@@ -47,6 +49,7 @@ export default () => (
                 <Route path="/board" exact component={Board} />
 
                 <Route path="/add/*" exact component={Add} />
+                <Route path="/login" exact component={ } />
                 <Redirect from="*" to="/" />
             </Switch>
         </>
