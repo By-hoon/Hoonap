@@ -8,13 +8,15 @@ import { dbService } from "fbase";
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 100px 1fr 300px;
     margin-left: 40px;
     margin-bottom: 20px;
 `;
 
 const MapContainer = styled.div`
 `
+
+const CheckContainer = styled.div``;
 
 const IconStyle = styled.div`
     color: black;
@@ -143,6 +145,9 @@ const Addpath = (props) => {
                         </NaverMap>
                     </RenderAfterNavermapsLoaded>
                 </MapContainer>
+                <CheckContainer>
+                    <span>path checking container</span>
+                </CheckContainer>
             </GridContainer>
             <LinkContainer>
                 <MoveLink to="/add/image">
