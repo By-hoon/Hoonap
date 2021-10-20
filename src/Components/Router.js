@@ -6,6 +6,7 @@ import {
     Switch
 } from "react-router-dom";
 import Header from "Components/Header";
+import Auth from "Routes/Auth";
 import Home from "Routes/Home";
 import ToyProjects from "Routes/ToyProjects";
 import Blog from "Routes/Blog";
@@ -18,40 +19,51 @@ import Story from "Routes/Story";
 import Map from "Routes/Map";
 import Comment from "Routes/Comment";
 
-import
-
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
 import Hooflix from "Routes/Hooflix";
 
-export default () => (
-    <Router>
-        <>
-            <Header />
-            <Switch>
-                <Route path="/" exact component={Home} />
+export default ({ refreshUser, isLoggedIn, userObj }) => {
 
-                <Route path="/toyprojects" exact component={ToyProjects} />
-                <Route path="/toyprojects/hoonap" exact component={Hoonap} />
-                <Route path="/toyprojects/hoowitter" exact component={Hoowitter} />
-                <Route path="/toyprojects/hooflix" exact component={Hooflix} />
+    return (
+        <Router>
+            <>
+                {isLoggedIn && <Header userObj={userObj} />}
 
-                <Route path="/blog" exact component={Blog} />
-                <Route path="/blog/:id" exact component={Story} />
-                <Route path="/gallery" exact component={Gallery} />
-                <Route path="/map" exact component={Map} />
+                {isLoggedIn ? (
+                    <Switch>
+                        <Route exact path="/">
+                            <Home userObj={userObj} />
+                        </Route>
+                        <Route path="/toyprojects" exact component={ToyProjects} />
+                        <Route path="/toyprojects/hoonap" exact component={Hoonap} />
+                        <Route path="/toyprojects/hoowitter" exact component={Hoowitter} />
+                        <Route path="/toyprojects/hooflix" exact component={Hooflix} />
 
-                <Route path="/comment/:id" exact component={Comment} />
+                        <Route path="/blog" exact component={Blog} />
+                        <Route path="/blog/:id" exact component={Story} />
+                        <Route path="/gallery" exact component={Gallery} />
+                        <Route path="/map" exact component={Map} />
 
-                <Route path="/painting" exact component={Painting} />
+                        <Route path="/comment/:id" exact component={Comment} />
 
-                <Route path="/about" exact component={About} />
-                <Route path="/board" exact component={Board} />
+                        <Route path="/painting" exact component={Painting} />
 
-                <Route path="/add/*" exact component={Add} />
-                <Route path="/login" exact component={ } />
-                <Redirect from="*" to="/" />
-            </Switch>
-        </>
-    </Router>
-);
+                        <Route path="/about" exact component={About} />
+                        <Route path="/board" exact component={Board} />
+
+                        <Route path="/add/*" exact component={Add} />
+                        <Redirect from="*" to="/" />
+                    </Switch>
+                ) : (
+                    <Switch>
+                        <Route exact path="/">
+                            <Auth />
+                        </Route>
+                        <Redirect from="*" to="/" />
+                    </Switch>
+                )}
+            </>
+        </Router>
+    )
+};
