@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Header from "Components/Header";
 import Auth from "Routes/Auth";
+import Profile from "Routes/Profile";
 import Home from "Routes/Home";
 import ToyProjects from "Routes/ToyProjects";
 import Blog from "Routes/Blog";
@@ -40,19 +41,36 @@ export default ({ refreshUser, isLoggedIn, userObj }) => {
                         <Route path="/toyprojects/hoowitter" exact component={Hoowitter} />
                         <Route path="/toyprojects/hooflix" exact component={Hooflix} />
 
-                        <Route path="/blog" exact component={Blog} />
-                        <Route path="/blog/:id" exact component={Story} />
-                        <Route path="/gallery" exact component={Gallery} />
-                        <Route path="/map" exact component={Map} />
+                        <Route exact path="/profile">
+                            <Profile userObj={userObj} />
+                        </Route>
 
-                        <Route path="/comment/:id" exact component={Comment} />
+                        <Route exact path="/blog">
+                            <Blog userObj={userObj} />
+                        </Route>
+                        <Route exact path="/blog/:id">
+                            <Story userObj={userObj} />
+                        </Route>
+                        <Route exact path="/gallery">
+                            <Gallery userObj={userObj} />
+                        </Route>
+                        <Route exact path="/map">
+                            <Map userObj={userObj} />
+                        </Route>
+
+                        <Route path="/comment/:id" exact>
+                            <Comment userObj={userObj} />
+                        </Route>
 
                         <Route path="/painting" exact component={Painting} />
 
                         <Route path="/about" exact component={About} />
                         <Route path="/board" exact component={Board} />
 
-                        <Route path="/add/*" exact component={Add} />
+
+                        <Route path="/add/*" exact>
+                            <Add userObj={userObj} />
+                        </Route>
                         <Redirect from="*" to="/" />
                     </Switch>
                 ) : (
