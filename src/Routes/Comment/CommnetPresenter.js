@@ -1,105 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 
+import FullScreen from "Components/FullScreen";
+
+import { Icon } from '@iconify/react';
+
 const GridContainer = styled.div`
+    min-width: 1200px; 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 550px 550px 1fr;
+    grid-template-rows: auto auto;
+    border: 3px solid black;
 `
 
-const FigContainer = styled.figure`
-    text-align: center; 
-    position: relative;
-    display: inline-block;
-    margin: 20px;
-    height: 800px;
-    width: 100%;
-    color: #bbb;
-    font-size: 16px;
-    box-shadow: none !important;
-    transform: translateZ(0);
-
-    *,&:before, &:after{
-        box-sizing: border-box;
-        transition: all 0.2s linear;
-    }
+const ImageContainer = styled.div`
+    grid-column: 2/3;
+    grid-row: 1/2;
+    border: 1px solid tomato;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
 
     &:hover{
-        figcaption{
+        div{
             opacity: 1;
         }
     }
-
 `;
 
 const Img = styled.img`
-  max-width: 100%;
-  height: 100%;
-  
-  object-fit: contain;
-  backface-visibility: hidden;
-  /* vertical-align: top; */
-  padding: 10px;
+  width: 100%;
 `;
 
-const FigCaption = styled.figcaption`
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* border-radius: 50%; */
-
-`;
-
-const SpanBox = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+const ImageButton = styled.div`
+    cursor: pointer;
     position: absolute;
-    top: 90%;
-    left: 50%;
-    transform: translate(-50%, -55%);
-    z-index: 1;
-    padding: 10px;
-`;
-
-const PreviewSpan = styled.span`
-    font-size: 13px;
-    color: #dfe6e9;
+    margin: 0px 0px 30px 30px;
+    font-size: 20px;
+    opacity: 0;
     &:hover{
-            color: #6c5ce7;
+        span{
+            display: inline-block;
+        }
     }
 `;
+const ButtonSpan = styled.span`
+    margin-left: 5px;
+    display: none;
+`;
 
-const ImageLink = styled(Link)``;
+const InterContainer = styled.div`
+    grid-column: 3/4;
+    grid-row: 1/3;
+    border: 3px solid aqua;
+`;
 
-const InterContainer = styled.div``;
+const InterBtnContainer = styled.div``;
+
+
 
 //  TODO: 대체 이미지 넣기
 
-const CommnetPresenter = ({ images }) => (
-    <>
-        <Helmet>
-            <title>Comment | BYHOON</title>
-        </Helmet>
-        <GridContainer>
-            <FigContainer>
-                <ImageLink to='/'>
-                    <Img src={images.attachmentId} />
-                    <FigCaption>
-                        <SpanBox>
+const CommnetPresenter = ({ images }) => {
 
-                        </SpanBox>
-                    </FigCaption>
-                </ImageLink>
-            </FigContainer>
-            <InterContainer></InterContainer>
-        </GridContainer>
-    </>
-);
+    const [full, setFull] = useState(false);
+
+    const onFull = () => {
+        setFull(true);
+    }
+    const offFull = () => {
+        setFull(false);
+    }
+    return (
+        <>
+            <Helmet>
+                <title>Comment | BYHOON</title>
+            </Helmet>
+            {full ? <FullScreen attachmentId={images.attachmentId} offFull={offFull} /> : null}
+            <GridContainer>
+                <ImageContainer>
+                    <Img src={images.attachmentId} />
+                    <ImageButton onClick={onFull}>
+                        <Icon icon="akar-icons:full-screen" />
+                        <ButtonSpan>dd</ButtonSpan>
+                    </ImageButton>
+                </ImageContainer>
+                <InterContainer>
+                </InterContainer>
+            </GridContainer>
+        </>
+    )
+};
 
 export default CommnetPresenter;
