@@ -173,6 +173,8 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                 attachmentId: mainImages[0].attachmentArray[index],
                 storyId,
             });
+            await dbService.collection(`imageLike`).doc(`${id}`).set({
+            });
         })
         history.push('/');
     }

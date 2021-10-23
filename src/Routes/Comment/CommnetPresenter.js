@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 
 import FullScreen from "Components/FullScreen";
-
+import { dbService } from "fbase";
 import { Icon } from '@iconify/react';
 
 const GridContainer = styled.div`
@@ -13,6 +13,10 @@ const GridContainer = styled.div`
     grid-template-columns: 1fr 550px 550px 1fr;
     grid-template-rows: auto auto;
     border: 3px solid black;
+    box-sizing: border-box;
+    *{
+        box-sizing: border-box;
+    }
 `
 
 const ImageContainer = styled.div`
@@ -57,37 +61,69 @@ const InterContainer = styled.div`
     border: 3px solid aqua;
 `;
 
-const InterBtnContainer = styled.div``;
+const InterBtnContainer = styled.div`
+    width: 100%;
+    border: 3px solid tomato;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    font-size: 25px;
+`;
 
-
+const LikeContainer = styled.div``;
 
 //  TODO: 대체 이미지 넣기
 
-const CommnetPresenter = ({ images }) => {
+const CommnetPresenter = ({ userInfo, imageLikes, imageObj, userObj }) => {
 
     const [full, setFull] = useState(false);
-
     const onFull = () => {
         setFull(true);
     }
     const offFull = () => {
         setFull(false);
     }
+    const onClickLike = async () => {
+        const imageLike = dbService.doc(`imageLike/${imageObj.imageId}`);
+        const userLike = dbService.doc(`userInfo/${userObj.uid}`);
+        if (!userInfo.likes[imageObj.imageId]) {
+            userInfo.likes[imageObj.imageId] = Date.now();
+            imageLikes[userObj.uid] = true;
+            await imageLike.set(imageLikes);
+            await userLike.set(userInfo);
+        }
+        else {
+            delete userInfo.likes[imageObj.imageId];
+            delete imageLikes[userObj.uid];
+            await imageLike.set(imageLikes);
+            await userLike.set(userInfo);
+        }
+    }
     return (
         <>
             <Helmet>
                 <title>Comment | BYHOON</title>
             </Helmet>
-            {full ? <FullScreen attachmentId={images.attachmentId} offFull={offFull} /> : null}
+            {full ? <FullScreen attachmentId={imageObj.attachmentId} offFull={offFull} /> : null}
             <GridContainer>
                 <ImageContainer>
-                    <Img src={images.attachmentId} />
+                    <Img src={imageObj.attachmentId} />
                     <ImageButton onClick={onFull}>
                         <Icon icon="akar-icons:full-screen" />
                         <ButtonSpan>dd</ButtonSpan>
                     </ImageButton>
                 </ImageContainer>
                 <InterContainer>
+                    <InterBtnContainer>
+                        <LikeContainer>
+                            {userInfo.likes ? (
+                                userInfo.likes[imageObj.imageId] ?
+                                    <Icon icon="bi:star-fill" onClick={onClickLike} /> :
+                                    <Icon icon="bi:star" onClick={onClickLike} />
+                            ) : null}
+                        </LikeContainer>
+                        <Icon icon="ls:etc" />
+                    </InterBtnContainer>
                 </InterContainer>
             </GridContainer>
         </>
