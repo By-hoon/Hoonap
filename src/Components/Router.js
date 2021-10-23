@@ -48,9 +48,7 @@ export default ({ refreshUser, isLoggedIn, userObj }) => {
                         <Route exact path="/blog">
                             <Blog userObj={userObj} />
                         </Route>
-                        <Route exact path="/blog/:id">
-                            <Story userObj={userObj} />
-                        </Route>
+                        <Route path="/blog/:id" exact render={(props) => <Story userObj={userObj} {...props} />} />
                         <Route exact path="/gallery">
                             <Gallery userObj={userObj} />
                         </Route>
