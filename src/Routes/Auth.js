@@ -1,13 +1,20 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faTwitter,
     faGoogle,
     faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import styled from "styled-components";
+import logo from '../image/LOGO.png';
 
-import { authService, firebaseInstance } from "fbase";
+import { authService, firebaseInstance, dbService } from "fbase";
+
+const Logo = styled.img.attrs({
+    src: logo,
+})`
+    width: 600px;
+    height: auto;
+`;
 
 const AuthContainer = styled.div`
   display: flex;
@@ -21,7 +28,7 @@ const AuthBtns = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 320px;
+  max-width: 520px;
 `;
 
 const AuthBtn = styled.button`
@@ -29,11 +36,12 @@ const AuthBtn = styled.button`
   border-radius: 20px;
   border: none;
   padding: 10px 0px;
-  font-size: 12px;
+  font-size: 20px;
   text-align: center;
-  width: 150px;
+  width: 250px;
   background: white;
   cursor: pointer;
+  border: solid 3px #74b9ff;
 `;
 
 const Auth = () => {
@@ -48,16 +56,17 @@ const Auth = () => {
             provider = new firebaseInstance.auth.GithubAuthProvider();
         }
         const data = await authService.signInWithPopup(provider);
-        console.log(data);
+        await dbService.collection(`userInfo`).doc(`${data.user.uid}`).set({
+            profileAttachment: data.user.displayName,
+            storys: {},
+            scraps: {},
+            comments: {},
+            likes: {},
+        });
     };
     return (
         <AuthContainer>
-            <FontAwesomeIcon
-                icon={faTwitter}
-                color={"#04AAFF"}
-                size="3x"
-                style={{ marginBottom: 30 }}
-            />
+            <Logo />
             <AuthBtns>
                 <AuthBtn onClick={onSocialClick} name="google">
                     Continue with Google <FontAwesomeIcon icon={faGoogle} />
