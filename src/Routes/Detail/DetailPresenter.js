@@ -205,7 +205,6 @@ const DetailPresenter = (
                     </CommentContainer>
                     <CommentForm onSubmit={commentSubmit}>
                         <CommentInput
-                            className="factoryInput__input"
                             value={comment}
                             onChange={onChange}
                             type="text"

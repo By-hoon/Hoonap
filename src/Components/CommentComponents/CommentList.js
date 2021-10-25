@@ -83,18 +83,17 @@ const Comments = ({ commentObj, isOwner, users, imageComments }) => {
                         users[commentObj.createdBy].profileAttachment !== "" ? (
                             <ProfileImage />
                         ) : (
-                            <ProfileNoImage>{users[commentObj.createdBy].userName[0]}</ProfileNoImage>
+                            <ProfileNoImage>{users[commentObj.createdBy].userName}</ProfileNoImage>
                         )) : null}
                 </ProfileContainer>
                 {editing ? (
                     <>
                         <CommentForm onSubmit={commentSubmit}>
                             <CommentInput
-                                className="factoryInput__input"
                                 value={newComment}
                                 onChange={onChange}
                                 type="text"
-                                placeholder="댓글 추가"
+                                placeholder="댓글 수정"
                                 maxLength={200}
                             />
                             <CommentCancle onClick={onCancle}>취소</CommentCancle>

@@ -139,7 +139,7 @@ const MapPresenter = () => {
     return (
         <>
             <Helmet>
-                <title>Map | BYHOON</title>
+                <title>Gallery | BYHOON</title>
             </Helmet>
             <NaverContainer>
                 <RenderAfterNavermapsLoaded
