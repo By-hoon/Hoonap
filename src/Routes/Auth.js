@@ -56,13 +56,16 @@ const Auth = () => {
             provider = new firebaseInstance.auth.GithubAuthProvider();
         }
         const data = await authService.signInWithPopup(provider);
-        await dbService.collection(`userInfo`).doc(`${data.user.uid}`).set({
-            profileAttachment: data.user.displayName,
-            storys: {},
-            scraps: {},
-            comments: {},
-            likes: {},
-        });
+        if (data.additionalUserInfo.isNewUser) {
+            await dbService.collection(`userInfo`).doc(`${data.user.uid}`).set({
+                userName: data.user.displayName,
+                profileAttachment: "",
+                stories: {},
+                scraps: {},
+                comments: {},
+                likes: {},
+            });
+        }
     };
     return (
         <AuthContainer>

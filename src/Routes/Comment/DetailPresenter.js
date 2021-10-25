@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 
 import FullScreen from "Components/FullScreen";
+import Comments from "Components/CommentComponents/CommentList";
+
 import { dbService } from "fbase";
 import { Icon } from '@iconify/react';
 
@@ -55,6 +57,8 @@ const ButtonSpan = styled.span`
     display: none;
 `;
 
+//--------------------------------------------
+
 const InterContainer = styled.div`
     grid-column: 3/4;
     grid-row: 1/3;
@@ -72,10 +76,36 @@ const InterBtnContainer = styled.div`
 
 const LikeContainer = styled.div``;
 
-//  TODO: 대체 이미지 넣기
+const TitleContainer = styled.div`
+    text-align: center;
+`;
+const TitleSpan = styled.span``;
 
-const CommnetPresenter = ({ userInfo, imageLikes, imageObj, userObj }) => {
+const DocContainer = styled.div`
+    //임시
+    height: 200px;
+    border: solid 2px violet;
+`;
 
+//TODO: 댓글 보기 끄기 기능
+
+const CommentContainer = styled.div`
+    border: solid 2px blue;
+`;
+
+const CommentForm = styled.form``;
+
+const CommentInput = styled.input``;
+
+const CommentCancle = styled.button``;
+
+const CommentSubmit = styled.input``;
+
+
+const DetailPresenter = (
+    { userInfo, imageLikes, imageComments, imageObj, userObj, title, commentArray, users }
+) => {
+    const [comment, setCommnet] = useState("");
     const [full, setFull] = useState(false);
     const onFull = () => {
         setFull(true);
@@ -99,6 +129,38 @@ const CommnetPresenter = ({ userInfo, imageLikes, imageObj, userObj }) => {
             await userLike.set(userInfo);
         }
     }
+
+    const onChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setCommnet(value);
+    };
+
+    const onCancle = (event) => {
+        event.preventDefault();
+        setCommnet("");
+    }
+
+    const commentSubmit = async (event) => {
+        if (comment === "") {
+            return;
+        }
+        event.preventDefault();
+
+        const imageComment = dbService.doc(`imageComment/${imageObj.imageId}`);
+        const userComments = dbService.doc(`userInfo/${userObj.uid}`);
+        if (!userInfo.comments[imageObj.imageId]) userInfo.comments[imageObj.imageId] = {};
+        if (!imageComments[userObj.uid]) imageComments[userObj.uid] = {};
+        userInfo.comments[imageObj.imageId][Date.now()] = comment;
+        imageComments[userObj.uid][Date.now()] = comment;
+
+        await imageComment.set(imageComments);
+        await userComments.set(userInfo);
+
+        setCommnet("");
+    }
+
     return (
         <>
             <Helmet>
@@ -124,10 +186,41 @@ const CommnetPresenter = ({ userInfo, imageLikes, imageObj, userObj }) => {
                         </LikeContainer>
                         <Icon icon="ls:etc" />
                     </InterBtnContainer>
+                    <TitleContainer>
+                        <TitleSpan>{title}</TitleSpan>
+                    </TitleContainer>
+                    <DocContainer></DocContainer>
+                    <CommentContainer>
+                        {commentArray.map((com, index) => {
+                            return (
+                                <Comments
+                                    key={index}
+                                    commentObj={com}
+                                    isOwner={com.createdBy === userObj.uid}
+                                    users={users}
+                                    imageComments={imageComments}
+                                />
+                            )
+                        })}
+                    </CommentContainer>
+                    <CommentForm onSubmit={commentSubmit}>
+                        <CommentInput
+                            className="factoryInput__input"
+                            value={comment}
+                            onChange={onChange}
+                            type="text"
+                            placeholder="댓글 추가"
+                            maxLength={200}
+                        />
+                        <CommentCancle onClick={onCancle}>취소</CommentCancle>
+                        <CommentSubmit
+                            type="submit" value="추가"
+                        />
+                    </CommentForm>
                 </InterContainer>
             </GridContainer>
         </>
     )
 };
 
-export default CommnetPresenter;
+export default DetailPresenter;

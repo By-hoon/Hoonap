@@ -84,10 +84,9 @@ const StoryContainer = styled.div``;
 
 //---------------------------------------------------------------
 
-const AddPresenter = withRouter(({ location: { pathname } }) => {
+const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
     const history = useHistory();
     const isMounted = useRef(false);
-
     const [part, setPart] = useState("path");
 
     const [mainPath, setMainPath] = useState([]);
@@ -150,6 +149,7 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                 mainImages,
                 mainStory,
                 storyTime: Date.now(),
+                userId: userObj.uid,
             }
             mainSave(mainObj, ids);
         }
@@ -160,7 +160,13 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
 
     const mainSave = async (mainObj, ids) => {
         const storyId = uuidv4();
+        const userInfo = await dbService.collection(`userInfo`).doc(`${userObj.uid}`).get();
+        const userData = userInfo.data();
+        const userStories = userData.stories;
+        userStories[storyId] = Date.now();
+
         await dbService.collection(`story_box`).doc(`${storyId}`).set(mainObj);
+        await dbService.collection(`userInfo`).doc(`${userObj.uid}`).update({ stories: userStories });
         await dbService.doc(`temp_path/${ids[0]}`).delete();
         await dbService.doc(`temp_image/${ids[1]}`).delete();
         await dbService.doc(`temp_story/${ids[2]}`).delete();
@@ -174,6 +180,8 @@ const AddPresenter = withRouter(({ location: { pathname } }) => {
                 storyId,
             });
             await dbService.collection(`imageLike`).doc(`${id}`).set({
+            });
+            await dbService.collection(`imageComment`).doc(`${id}`).set({
             });
         })
         history.push('/');

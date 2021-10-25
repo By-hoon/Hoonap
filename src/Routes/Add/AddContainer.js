@@ -4,7 +4,7 @@ import AddPresenter from "./AddPresenter";
 export default class extends React.Component {
     render() {
         return (
-            <AddPresenter />
+            <AddPresenter userObj={this.props.userObj} />
         )
     }
 }
