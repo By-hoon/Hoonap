@@ -71,19 +71,13 @@ const SpanBox = styled.div`
 const PreviewSpan = styled.span`
     font-size: 13px;
     color: #dfe6e9;
+    &:hover{
+            color: #6c5ce7;
+    }
 `;
 
 const ImageLink = styled(Link)``;
 
-const CommentLink = styled(Link)`
-    text-decoration: none;
-    
-    &:hover{
-        span{
-            color: #6c5ce7;
-        }
-    }
-`;
 
 //      TODO: story id받아와서 ImageLInk에 넣어주기.
 //            imageId CommentLink에 넣어주기.
@@ -125,15 +119,15 @@ const GalleryPresenter = () => {
                 {images.length > 0 ?
                     (images.map((img) => (
                         <FigContainer key={img.imgId}>
-                            <ImageLink to="/">
+                            <ImageLink to={`/comment/${img.imgId}`}>
                                 <Img src={img.attachmentArray} />
+                                <FigCaption>
+                                    <SpanBox>
+                                        <PreviewSpan>3 likes</PreviewSpan>
+                                        <PreviewSpan>5 comments</PreviewSpan>
+                                    </SpanBox>
+                                </FigCaption>
                             </ImageLink>
-                            <FigCaption>
-                                <SpanBox>
-                                    <CommentLink to="/comment/id"><PreviewSpan>3 likes</PreviewSpan></CommentLink>
-                                    <CommentLink to="/comment/id"><PreviewSpan>5 comments</PreviewSpan></CommentLink>
-                                </SpanBox>
-                            </FigCaption>
                         </FigContainer>
                     ))) : null}
             </FlexContainer>
