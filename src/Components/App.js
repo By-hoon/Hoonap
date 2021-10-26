@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Router from "Components/Router";
-import { authService } from "fbase";
+import GlobalStyles from "./GlobalStyles";
+import { authService, dbService } from "fbase";
 
 const App = () => {
     const [init, setInit] = useState(false);
@@ -8,10 +9,14 @@ const App = () => {
     useEffect(() => {
         authService.onAuthStateChanged((user) => {
             if (user) {
-                setUserObj({
-                    displayName: user.displayName,
-                    uid: user.uid,
-                    updateProfile: (args) => user.updateProfile(args),
+                dbService.doc(`userInfo/${user.uid}`).onSnapshot((snapshot) => {
+                    const profileImg = snapshot.data();
+                    setUserObj({
+                        displayName: user.displayName,
+                        profileImg: profileImg.profileAttachment,
+                        uid: user.uid,
+                        updateProfile: (args) => user.updateProfile(args),
+                    });
                 });
             } else {
                 setUserObj(null);
@@ -40,7 +45,7 @@ const App = () => {
             ) : (
                 "Initializing..."
             )}
-            <footer>&copy; {new Date().getFullYear()} BYHOON</footer>
+            <GlobalStyles />
         </>
     );
 }

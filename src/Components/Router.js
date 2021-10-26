@@ -82,6 +82,7 @@ export default ({ refreshUser, isLoggedIn, userObj }) => {
                         <Redirect from="*" to="/" />
                     </Switch>
                 )}
+                <footer>&copy; {new Date().getFullYear()} BYHOON</footer>
             </>
         </Router>
     )

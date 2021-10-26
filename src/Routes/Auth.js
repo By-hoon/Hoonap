@@ -14,6 +14,17 @@ const Logo = styled.img.attrs({
 })`
     width: 600px;
     height: auto;
+    animation: rotatescale 1.5s linear 1 ;
+    @keyframes rotatescale{
+    0%{
+        transform:perspective(300px) rotateZ(0) scale(0.1,0.1);
+        opacity: 0.3;
+    }
+    100%{
+        transform:perspective(300px) rotateZ(360deg) scale(1,1);
+        opacity: 1;
+    }
+}
 `;
 
 const AuthContainer = styled.div`
@@ -25,10 +36,16 @@ const AuthContainer = styled.div`
 `;
 
 const AuthBtns = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 520px;
+    opacity: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 520px;
+    animation: appear 1s linear 1 forwards;
+    animation-delay: 1.5s;
+    @keyframes appear{
+        to{opacity: 1;}
+    }
 `;
 
 const AuthBtn = styled.button`
