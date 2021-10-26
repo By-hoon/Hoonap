@@ -18,7 +18,7 @@ import Board from "Routes/Board";
 import Add from "Routes/Add";
 import Story from "Routes/Story";
 import Map from "Routes/Map";
-import Comment from "Routes/Comment";
+import Detail from "Routes/Detail";
 
 import Hoonap from "Routes/Hoonap";
 import Hoowitter from "Routes/Hoowitter";
@@ -41,8 +41,11 @@ export default ({ refreshUser, isLoggedIn, userObj }) => {
                         <Route path="/toyprojects/hoowitter" exact component={Hoowitter} />
                         <Route path="/toyprojects/hooflix" exact component={Hooflix} />
 
-                        <Route exact path="/profile">
-                            <Profile userObj={userObj} />
+                        <Route exact path="/profile/:id">
+                            <Profile userObj={userObj} refreshUser={refreshUser} />
+                        </Route>
+                        <Route exact path="/profile/:id/:part">
+                            <Profile userObj={userObj} refreshUser={refreshUser} />
                         </Route>
 
                         <Route exact path="/blog">
@@ -57,7 +60,7 @@ export default ({ refreshUser, isLoggedIn, userObj }) => {
                         </Route>
 
                         <Route path="/comment/:id" exact>
-                            <Comment userObj={userObj} />
+                            <Detail userObj={userObj} />
                         </Route>
 
                         <Route path="/painting" exact component={Painting} />
