@@ -8,7 +8,7 @@ import { dbService } from "fbase";
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 100px 1fr 300px;
+    grid-template-columns: 1fr 100px 200px;
     margin-left: 40px;
     margin-bottom: 20px;
 `;
@@ -96,16 +96,6 @@ const Addpath = (props) => {
     return (
         <>
             <GridContainer>
-                <ButtonContainer>
-                    {preview === "off" && path.length < 1 ?
-                        <StartBtn onClick={onStart}>좌표선택</StartBtn> :
-                        preview === "on" ?
-                            <SubmitForm onSubmit={onSubmit}>
-                                <SubmitInput type="submit" value="미리보기" />
-                            </SubmitForm> :
-                            <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
-                    }
-                </ButtonContainer>
                 <MapContainer>
                     <RenderAfterNavermapsLoaded
                         ncpClientId={process.env.REACT_APP_NAVER_CLIENT_ID}
@@ -145,9 +135,16 @@ const Addpath = (props) => {
                         </NaverMap>
                     </RenderAfterNavermapsLoaded>
                 </MapContainer>
-                <CheckContainer>
-                    <span>path checking container</span>
-                </CheckContainer>
+                <ButtonContainer>
+                    {preview === "off" && path.length < 1 ?
+                        <StartBtn onClick={onStart}>좌표선택</StartBtn> :
+                        preview === "on" ?
+                            <SubmitForm onSubmit={onSubmit}>
+                                <SubmitInput type="submit" value="미리보기" />
+                            </SubmitForm> :
+                            <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
+                    }
+                </ButtonContainer>
             </GridContainer>
             <LinkContainer>
                 <MoveLink to="/add/image">

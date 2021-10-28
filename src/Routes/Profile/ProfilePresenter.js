@@ -13,7 +13,12 @@ import { authService, dbService } from "fbase";
 
 const InfoContainer = styled.div``;
 
-const ProfileImg = styled.img``;
+const ProfileImg = styled.img`
+    width: 250px;
+    height: 250px;
+    object-fit: contain;
+    border-radius: 30%;
+`;
 
 const ProfileNoImg = styled.span``;
 

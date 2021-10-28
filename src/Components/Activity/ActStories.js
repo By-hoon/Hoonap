@@ -21,6 +21,7 @@ const FigContainer = styled.figure`
     transform: translateZ(0);
 
     *,&:before, &:after{
+        text-align: center;
         box-sizing: border-box;
         transition: all 0.3s linear;
     }

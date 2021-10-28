@@ -10,6 +10,7 @@ const FlexContainer = styled.div`
 `;
 
 const FigContainer = styled.figure`
+    text-align: center; 
     position: relative;
     display: inline-block;
     margin: 20px;
@@ -37,6 +38,7 @@ const FigContainer = styled.figure`
 const Img = styled.img`
   max-width: 100%;
   height: 100%;
+  
   object-fit: contain;
   backface-visibility: hidden;
   /* vertical-align: top; */
@@ -70,19 +72,16 @@ const SpanBox = styled.div`
 const PreviewSpan = styled.span`
     font-size: 13px;
     color: #dfe6e9;
+    &:hover{
+            color: #6c5ce7;
+    }
 `;
 
 const ImageLink = styled(Link)``;
 
-const CommentLink = styled(Link)`
-    text-decoration: none;
-    
-    &:hover{
-        span{
-            color: #6c5ce7;
-        }
-    }
-`;
+// const CommentLink = styled(Link)`
+//     text-decoration: none;
+// `;
 
 const StoryPresenter = ({ error, loading, storyObj }) => {
     // const [comments, setComments] = useState("");
@@ -97,18 +96,17 @@ const StoryPresenter = ({ error, loading, storyObj }) => {
                 {storyObj ?
                     (storyObj.mainImages[0].attachmentArray.map((img, index) => {
                         const imgId = storyObj.mainImages[0].imageId[index];
-                        const idLink = `/comment/${imgId}`;
                         return (
                             <FigContainer key={imgId}>
-                                <ImageLink to={idLink}>
+                                <ImageLink to={`/comment/${imgId}`}>
                                     <Img src={img} />
+                                    <FigCaption>
+                                        <SpanBox>
+                                            <PreviewSpan>3 likes</PreviewSpan>
+                                            <PreviewSpan>5 comments</PreviewSpan>
+                                        </SpanBox>
+                                    </FigCaption>
                                 </ImageLink>
-                                <FigCaption>
-                                    <SpanBox>
-                                        <CommentLink to={idLink}><PreviewSpan>3 likes</PreviewSpan></CommentLink>
-                                        <CommentLink to={idLink}><PreviewSpan>5 comments</PreviewSpan></CommentLink>
-                                    </SpanBox>
-                                </FigCaption>
                             </FigContainer>
                         )
                     })) : null}

@@ -214,17 +214,6 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                             part === "story" ? <Addstory moveImg={moveImg} /> : null}
                 </AddContainer>
                 <SaveContainer>
-                    {/* <ImagesContainer>
-                        {mainImages.length > 0 ? (
-                            mainImages[0].imageId.map((imgId, index) => (
-                                <ImageDetail key={imgId}>
-                                    <ImageInner>
-                                        <Img src={mainImages[0].attachmentArray[index]} />
-                                    </ImageInner>
-                                </ImageDetail>
-                            ))
-                        ) : null}
-                    </ImagesContainer> */}
                     {part === "story" ?
                         <SubmitForm onSubmit={onSubmit}>
                             <SubmitInput type="submit" value="스토리 저장" />

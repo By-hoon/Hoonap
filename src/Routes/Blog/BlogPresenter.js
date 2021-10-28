@@ -24,10 +24,10 @@ const FigContainer = styled.figure`
     *,&:before, &:after{
         box-sizing: border-box;
         transition: all 0.3s linear;
+        text-align: center;
     }
 
     &:before, &:after{
-        box-sizing: border-box;
         border-radius: 50%;
         content: '';
         position: absolute;
