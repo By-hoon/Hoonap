@@ -7,7 +7,22 @@ import { storageService } from "fbase";
 import styled from "styled-components";
 
 const AddContainer = styled.div`
+    width: 80%;
+    border: solid violet 2px;
     margin-left: 50px;
+`;
+
+const DropContainer = styled.div`
+    margin: auto;
+    width: 50%;
+    border: 3px solid aqua;
+`;
+
+const DropInput = styled.input``;
+
+const DropSpan = styled.span`
+    position: absolute;
+    border: solid 1px tomato;
 `;
 
 const ThumbsContainer = styled.div`
@@ -44,9 +59,6 @@ const Img = styled.img`
 const SubmitForm = styled.form``;
 
 const SubmitInput = styled.input``;
-
-//  TODO: 드랍존 가시적으로 보이게 수정
-//        image crop 기능 넣기 
 
 const MyDropzone = () => {
     const [files, setFiles] = useState([]);
@@ -90,19 +102,19 @@ const MyDropzone = () => {
     return (
         <>
             <AddContainer>
-                <div {...getRootProps({ className: 'dropzone' })}>
-                    <input {...getInputProps()} />
-                    <p>Drag 'n' drop some files here, or click to select files</p>
-                </div>
-                <ThumbsContainer>
-                    {files.map(file => (
-                        <Thumb key={file.name}>
-                            <ThumbInner>
-                                <Img src={file.preview} />
-                            </ThumbInner>
-                        </Thumb>
-                    ))}
-                </ThumbsContainer>
+                <DropContainer {...getRootProps()}>
+                    <DropInput {...getInputProps()} />
+                    <DropSpan>Drop Box</DropSpan>
+                    <ThumbsContainer>
+                        {files.map(file => (
+                            <Thumb key={file.name}>
+                                <ThumbInner>
+                                    <Img src={file.preview} />
+                                </ThumbInner>
+                            </Thumb>
+                        ))}
+                    </ThumbsContainer>
+                </DropContainer>
             </AddContainer>
             <SubmitForm onSubmit={onSubmit}>
                 <SubmitInput type="submit" value="이미지저장" />
