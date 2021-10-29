@@ -5,7 +5,7 @@ import { authService, dbService } from "fbase";
 
 const App = () => {
     const [init, setInit] = useState(false);
-    const [userObj, setUserObj] = useState(null);
+    const [userObj, setUserObj] = useState(true);
     useEffect(() => {
         authService.onAuthStateChanged((user) => {
             if (user) {
@@ -37,11 +37,13 @@ const App = () => {
     return (
         <>
             {init ? (
-                <Router
-                    refreshUser={refreshUser}
-                    isLoggedIn={Boolean(userObj)}
-                    userObj={userObj}
-                />
+                <>
+                    <Router
+                        refreshUser={refreshUser}
+                        isLoggedIn={Boolean(userObj)}
+                        userObj={userObj}
+                    />
+                </>
             ) : (
                 "Initializing..."
             )}
