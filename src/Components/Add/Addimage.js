@@ -69,6 +69,7 @@ const Addimage = ({ mainImages, movePath, moveStory }) => {
         const ok = window.confirm(`사진을 삭제하시겠습니까?`);
         if (ok) {
             const tempImg = dbService.doc(`temp_image/${mainImages.id}`);
+            await dbService.collection('imageContent').doc(`${mainImages.imageId[index]}`).delete();
             delete mainImages.id;
             mainImages.imageId.splice(index, 1);
             mainImages.attachmentArray.splice(index, 1);

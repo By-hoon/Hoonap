@@ -89,9 +89,11 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
     const isMounted = useRef(false);
     const [part, setPart] = useState("path");
 
-    const [mainPath, setMainPath] = useState([]);
-    const [mainImages, setMainImages] = useState([]);
-    const [mainStory, setMainStory] = useState([]);
+    const [mainPath, setMainPath] = useState({});
+    const [mainImages, setMainImages] = useState({});
+    const [mainStory, setMainStory] = useState({});
+
+    const [mainCon, setMainCon] = useState({});
 
     const movePath = () => {
         setPart("path")
@@ -111,7 +113,7 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                 ...doc.data(),
             }));
             if (isMounted.current) {
-                setMainPath(pathArray);
+                setMainPath(pathArray[0]);
             }
         });
         dbService.collection("temp_image").onSnapshot((snapshot) => {
@@ -120,7 +122,7 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                 ...doc.data(),
             }));
             if (isMounted.current) {
-                setMainImages(imageArray);
+                setMainImages(imageArray[0]);
             }
         });
         dbService.collection("temp_story").onSnapshot((snapshot) => {
@@ -129,7 +131,21 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                 ...doc.data(),
             }));
             if (isMounted.current) {
-                setMainStory(storyArray);
+                setMainStory(storyArray[0]);
+            }
+        });
+
+        dbService.collection("imageContent").onSnapshot((snapshot) => {
+            const contentArray = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            const contentObj = {};
+            contentArray.forEach(content => {
+                contentObj[content.id] = content.content
+            })
+            if (isMounted.current) {
+                setMainCon(contentObj);
             }
         });
 
@@ -139,11 +155,11 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (mainPath.length > 0 && mainImages.length > 0 && mainStory.length > 0) {
-            const ids = [mainPath[0].id, mainImages[0].id, mainStory[0].id]
-            delete mainPath[0].id;
-            delete mainImages[0].id;
-            delete mainStory[0].id;
+        if (Object.keys(mainPath).length > 0 && Object.keys(mainImages).length > 0 && Object.keys(mainStory).length > 0) {
+            const ids = [mainPath.id, mainImages.id, mainStory.id]
+            delete mainPath.id;
+            delete mainImages.id;
+            delete mainStory.id;
             const mainObj = {
                 mainPath,
                 mainImages,
@@ -174,9 +190,9 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
     }
 
     const imageSave = (storyId) => {
-        mainImages[0].imageId.forEach(async (id, index) => {
+        mainImages.imageId.forEach(async (id, index) => {
             await dbService.collection(`image_box`).doc(`${id}`).set({
-                attachmentId: mainImages[0].attachmentArray[index],
+                attachmentId: mainImages.attachmentArray[index],
                 storyId,
             });
             await dbService.collection(`imageLike`).doc(`${id}`).set({
@@ -210,8 +226,8 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                 </StageContainer>
                 <AddContainer>
                     {part === "path" ? <Addpath moveImg={moveImg} movePath={movePath} /> :
-                        part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} /> :
-                            part === "story" ? <Addstory moveImg={moveImg} /> : null}
+                        part === "image" ? <Addimage movePath={movePath} moveStory={moveStory} mainImages={mainImages} /> :
+                            part === "story" ? <Addstory moveImg={moveImg} mainImages={mainImages} mainCon={mainCon} /> : null}
                 </AddContainer>
                 <SaveContainer>
                     {part === "story" ?
