@@ -13,8 +13,11 @@ const AddContainer = styled.div`
 `;
 
 const DropContainer = styled.div`
+    position: relative;
     margin: auto;
     width: 50%;
+    min-height: 300px;
+    height: auto;
     border: 3px solid aqua;
 `;
 
@@ -22,7 +25,9 @@ const DropInput = styled.input``;
 
 const DropSpan = styled.span`
     position: absolute;
-    border: solid 1px tomato;
+    display: inline-block;
+    top: 50%;
+    left: 45%;
 `;
 
 const ThumbsContainer = styled.div`
@@ -60,7 +65,7 @@ const SubmitForm = styled.form``;
 
 const SubmitInput = styled.input``;
 
-const MyDropzone = () => {
+const MyDropzone = ({ mainImages }) => {
     const [files, setFiles] = useState([]);
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -92,7 +97,16 @@ const MyDropzone = () => {
                         imageId: attachmentID,
                         attachmentArray,
                     };
-                    await dbService.collection("temp_image").add(imagesObj);
+                    if (mainImages) {
+                        const tempImg = dbService.doc(`temp_image/${mainImages.id}`);
+                        delete mainImages.id;
+                        mainImages.attachmentArray.forEach((savedImg, index) => {
+                            imagesObj.imageId.push(mainImages.imageId[index]);
+                            imagesObj.attachmentArray.push(savedImg);
+                        })
+                        await tempImg.set(imagesObj);
+                    }
+                    else await dbService.collection("temp_image").add(imagesObj);
                 }
             }
         });
