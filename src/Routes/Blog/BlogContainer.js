@@ -24,8 +24,8 @@ export default class extends React.Component {
                 }));
                 boxArray.forEach(box => {
                     idArray.push(box.id);
-                    imgArray.push(box.mainImages[0].attachmentArray[0]);
-                    nameArray.push(box.mainStory[0].title)
+                    imgArray.push(box.mainImages.attachmentArray);
+                    nameArray.push(box.mainStory.title)
                 });
                 this.setState({
                     titleIds: idArray,

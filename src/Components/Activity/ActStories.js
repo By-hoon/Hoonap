@@ -115,9 +115,9 @@ export default ({ userObj, userInfo, storyObj }) => (
                     return (
                         <FigContainer key={story}>
                             <StoryLink to={`/blog/${story}`}>
-                                <TitleImage src={storyDetail.mainImages[0].attachmentArray[0]} alt="titleImg"></TitleImage>
+                                <TitleImage src={storyDetail.mainImages.attachmentArray[0]} alt="titleImg"></TitleImage>
                                 <FigCaption>
-                                    <TitleSpan>{storyDetail.mainStory[0].title}</TitleSpan>
+                                    <TitleSpan>{storyDetail.mainStory.title}</TitleSpan>
                                 </FigCaption>
                             </StoryLink>
                         </FigContainer>

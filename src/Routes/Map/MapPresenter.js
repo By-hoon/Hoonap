@@ -87,8 +87,8 @@ const MapPresenter = () => {
             boxArray.forEach(box => {
                 pathArray.push(box.mainPath);
                 imageObj[box.id] = {
-                    attachmentArray: box.mainImages[0].attachmentArray,
-                    imageId: box.mainImages[0].imageId,
+                    attachmentArray: box.mainImages.attachmentArray,
+                    imageId: box.mainImages.imageId,
                 }
                 idArray.push(box.id);
                 fcObj[box.id] = '#ff0000';
@@ -156,8 +156,8 @@ const MapPresenter = () => {
                     >
                         {path ? path.map((pa, index) => {
                             let paths = [];
-                            for (let i = 0; i < pa[0].lat.length; i++) {
-                                paths.push({ lat: pa[0].lat[i], lng: pa[0].lng[i] })
+                            for (let i = 0; i < pa.lat.length; i++) {
+                                paths.push({ lat: pa.lat[i], lng: pa.lng[i] })
                             };
                             return (
                                 <Poly

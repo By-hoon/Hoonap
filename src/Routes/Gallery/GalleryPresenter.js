@@ -97,10 +97,10 @@ const GalleryPresenter = () => {
                 ...doc.data(),
             }));
             boxArray.forEach(box => {
-                box.mainImages[0].attachmentArray.forEach((attachment, index) => {
+                box.mainImages.attachmentArray.forEach((attachment, index) => {
                     const imageObj = {
                         storyId: box.id,
-                        imgId: box.mainImages[0].imageId[index],
+                        imgId: box.mainImages.imageId[index],
                         attachmentArray: attachment,
                     }
                     setImages((prev) => [imageObj, ...prev]);

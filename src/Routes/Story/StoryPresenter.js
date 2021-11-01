@@ -94,8 +94,8 @@ const StoryPresenter = ({ error, loading, storyObj }) => {
             </Helmet>
             <FlexContainer>
                 {storyObj ?
-                    (storyObj.mainImages[0].attachmentArray.map((img, index) => {
-                        const imgId = storyObj.mainImages[0].imageId[index];
+                    (storyObj.mainImages.attachmentArray.map((img, index) => {
+                        const imgId = storyObj.mainImages.imageId[index];
                         return (
                             <FigContainer key={imgId}>
                                 <ImageLink to={`/comment/${imgId}`}>
