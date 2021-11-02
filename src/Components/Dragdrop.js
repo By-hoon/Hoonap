@@ -7,18 +7,19 @@ import { storageService } from "fbase";
 import styled from "styled-components";
 
 const AddContainer = styled.div`
-    width: 80%;
-    border: solid violet 2px;
-    margin-left: 50px;
+    width: 100%;
+    margin-left: 20px;
+    margin-bottom: 50px;
 `;
 
 const DropContainer = styled.div`
     position: relative;
     margin: auto;
-    width: 50%;
-    min-height: 300px;
+    width: 60%;
+    min-height: 350px;
+    background-color: #dfe6e9;
     height: auto;
-    border: 3px solid aqua;
+    box-shadow : 2px 10px 10px #999;
 `;
 
 const DropInput = styled.input``;
@@ -27,7 +28,9 @@ const DropSpan = styled.span`
     position: absolute;
     display: inline-block;
     top: 50%;
-    left: 45%;
+    left: 44%;
+    font-size: 30px;
+    color: white;
 `;
 
 const ThumbsContainer = styled.div`
@@ -35,6 +38,7 @@ const ThumbsContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 16px;
+    padding: 10px;
 `;
 
 const Thumb = styled.div`
@@ -43,8 +47,8 @@ const Thumb = styled.div`
     border: 1px solid #eaeaea;
     margin-bottom: 8px;
     margin-right: 8px;
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
     padding: 4px;
     box-sizing: border-box;
 `;
@@ -56,14 +60,40 @@ const ThumbInner = styled.div`
 `;
 
 const Img = styled.img`
+    border-radius: 10px;
     object-fit: contain;
     width: 100%;
     height: 100%;
 `;
 
-const SubmitForm = styled.form``;
+const BtnContainer = styled.div`
+    text-align: center;
+    margin-left: 50px;
+`;
 
-const SubmitInput = styled.input``;
+const BtnStyle = styled.span`
+    position: relative;
+    display: inline-block;
+    padding: 12px 36px;
+    margin: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline-style: none;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease-in-out;
+        background-color: tomato;
+    }
+    animation: opacityChange 1s linear 1 ;
+        @keyframes opacityChange{
+            0%{opacity: 0;}
+            100%{opacity: 1;}
+    } 
+`;
 
 const MyDropzone = ({ mainImages }) => {
     const [files, setFiles] = useState([]);
@@ -130,9 +160,9 @@ const MyDropzone = ({ mainImages }) => {
                     </ThumbsContainer>
                 </DropContainer>
             </AddContainer>
-            <SubmitForm onSubmit={onSubmit}>
-                <SubmitInput type="submit" value="이미지저장" />
-            </SubmitForm>
+            <BtnContainer>
+                <BtnStyle onClick={onSubmit}>이미지 저장</BtnStyle>
+            </BtnContainer>
         </>
     );
 }

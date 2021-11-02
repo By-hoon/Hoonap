@@ -48,14 +48,33 @@ const IconMenu = styled.span`
 //       각 단계에서 필요한 입력들이 다 수행되지 않았을 때, 이동버튼 비활성화 시키기.
 
 const SaveContainer = styled.div`
-    margin-left: 40px;
+    text-align: center;
+    margin-left: 10px;
 `;
 
-const SaveSpan = styled.div``;
-
-const SubmitForm = styled.form``;
-
-const SubmitInput = styled.input``;
+const BtnStyle = styled.span`
+    position: relative;
+    display: inline-block;
+    padding: 12px 36px;
+    margin: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline-style: none;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease-in-out;
+        background-color: tomato;
+    }
+    animation: opacityChange 1s linear 1 ;
+        @keyframes opacityChange{
+            0%{opacity: 0;}
+            100%{opacity: 1;}
+    } 
+`;
 
 const FlashSpan = styled.span`
     position: absolute;
@@ -72,14 +91,6 @@ const FlashSpan = styled.span`
     background-color: tomato;
     color: white;
 `;
-
-//------------------------------------PATH PART
-const PathContainer = styled.div``;
-
-//------------------------------------IMAGE PART
-
-//------------------------------------STORY PART
-const StoryContainer = styled.div``;
 
 
 //---------------------------------------------------------------
@@ -231,9 +242,8 @@ const AddPresenter = withRouter(({ location: { pathname }, userObj }) => {
                 </AddContainer>
                 <SaveContainer>
                     {part === "story" ?
-                        <SubmitForm onSubmit={onSubmit}>
-                            <SubmitInput type="submit" value="스토리 저장" />
-                        </SubmitForm> : null}
+                        <BtnStyle onClick={onSubmit}>스토리 저장</BtnStyle>
+                        : null}
                 </ SaveContainer>
             </GridContainer>
         </>

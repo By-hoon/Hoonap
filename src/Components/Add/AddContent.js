@@ -6,8 +6,6 @@ import { Icon } from "@iconify/react";
 import { dbService } from "fbase";
 
 const GridContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     height: auto;
     min-height: 200px;
 `;
@@ -16,7 +14,7 @@ const ImageContainer = styled.div`
 `;
 
 const Img = styled.img`
-    cursor: pointer;
+    border-radius: 10px;
     object-fit: contain;
     width: 100%;
     height: 100%;
@@ -31,8 +29,22 @@ const StoryContainer = styled.div`
 `;
 
 const StoryInput = styled.input`
+    overflow: hidden;
+    padding: 12px;
+    display: block;
+    outline: none;
+    width: 100%;
+    border-radius: 4px;
+    caret-color: lightskyblue;
+    box-sizing: border-box;
+    margin-top: 5px;
+    line-height: 15px;
+    &:focus {
+        background: azure;
+    }
 `;
 const StorySubmit = styled.input`
+    display: none;
 `;
 
 export default ({ curImg, curCon }) => {
@@ -68,15 +80,14 @@ export default ({ curImg, curCon }) => {
                         <StoryForm onSubmit={storySubmit}>
                             <StoryContainer>
                                 <StoryInput
-                                    className="factoryInput__input"
                                     value={content}
                                     onChange={onChange}
                                     type="text"
-                                    placeholder="Tell us about this Image"
+                                    placeholder="이미지에 대해 적어주세요."
                                     maxLength={300}
                                 />
                                 <StorySubmit
-                                    type="submit" value="확인"
+                                    type="submit"
                                 />
                             </StoryContainer>
                         </StoryForm>

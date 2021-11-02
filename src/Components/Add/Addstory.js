@@ -28,43 +28,35 @@ const StoryForm = styled.form``;
 
 const StoryContainer = styled.div`
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    position: relative;
-    margin-bottom: 20px;
-    width: 80%;
+    justify-content: center;
+    margin-bottom: 100px;
 `;
 
 const StoryInput = styled.input`
-    margin-left: 50px;
-    margin-bottom: 30px;
-    flex-grow: 1;
-    height: 40px;
-    padding: 0px 20px;
-    border: 1px solid #04aaff;
-    border-radius: 20px;
-    font-weight: 500;
-    font-size: 14px;
+    resize: none;
+    overflow: hidden;
+    padding: 12px;
+    display: block;
+    outline: none;
+    width: 500px;
+    min-height: 38px;
+    border-radius: 4px;
+    caret-color: lightskyblue;
+    box-sizing: border-box;
+    line-height: 15px;
+    &:focus {
+        background: azure;
+    }
 `;
 const StorySubmit = styled.input`
-    position: absolute;
-    right: 0;
-    bottom: 30px;
-    background-color: #04aaff;
-    height: 40px;
-    width: 40px;
-    padding: 10px 0px;
-    text-align: center;
-    border-radius: 20px;
-    color: white;
-    box-sizing: border-box;
+    display: none;
 `;
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 300px 600px 1fr;
+    grid-template-columns: 1fr 400px 400px 1fr;
     height: auto;
+    margin-bottom: 50px;
 `;
 
 const FlexContainer = styled.div`
@@ -72,7 +64,6 @@ const FlexContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     grid-column: 2/3;
-    border: 3px solid black;
 `;
 
 const FigContainer = styled.figure`
@@ -90,16 +81,15 @@ const FigContainer = styled.figure`
 const FigCaption = styled.figcaption`
   position: absolute;
   cursor: pointer;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  top: 4px;
+  right: 5.5px;
   font-size: 40px;
   opacity:${props => (props.checked ? '1' : '0.2')};
 `;
 
 const Img = styled.img`
     cursor: pointer;
+    border-radius: 10px;
     object-fit: contain;
     width: 100%;
     height: 100%;
@@ -107,7 +97,6 @@ const Img = styled.img`
 
 const ContentContainer = styled.div`
     grid-column: 3/4;
-    border: 3px black solid;
 `;
 
 const AddStory = ({ mainImages, moveImg, mainCon }) => {
@@ -123,11 +112,15 @@ const AddStory = ({ mainImages, moveImg, mainCon }) => {
 
     const storySubmit = async (event) => {
         event.preventDefault();
-        const storyObj = {
-            title,
+        if (title) {
+            const storyObj = {
+                title,
+            }
+            await dbService.collection("temp_story").add(storyObj);
+            setTitle("");
+            alert("제목 저장 완료")
         }
-        await dbService.collection("temp_story").add(storyObj);
-        setTitle("");
+        else alert("제목을 입력해주세요.")
     }
 
     const onClickContent = async (index) => {
@@ -142,15 +135,14 @@ const AddStory = ({ mainImages, moveImg, mainCon }) => {
             <StoryForm onSubmit={storySubmit}>
                 <StoryContainer>
                     <StoryInput
-                        className="factoryInput__input"
                         value={title}
                         onChange={onChange}
                         type="text"
-                        placeholder="Tell us about this story"
+                        placeholder="제목을 입력하세요 !"
                         maxLength={100}
                     />
                     <StorySubmit
-                        type="submit" value="&rarr;"
+                        type="submit"
                     />
                 </StoryContainer>
             </StoryForm>

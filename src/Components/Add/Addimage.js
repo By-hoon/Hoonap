@@ -14,6 +14,7 @@ const IconStyle = styled.div`
 `;
 
 const LinkContainer = styled.div`
+    margin-left: 50px;
     display: flex;
     justify-content: center;
 `
@@ -28,6 +29,7 @@ const FlexContainer = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 16px;
+    margin-left: 50px;
 `;
 
 const FigContainer = styled.figure`
@@ -43,21 +45,33 @@ const FigContainer = styled.figure`
 
     &:hover{
         figcaption{
-            opacity: 1;
+            animation: opacityChange 0.7s linear 1 forwards;
+            @keyframes opacityChange{
+                0%{opacity: 0;}
+                100%{opacity: 1;}
+            } 
         }
     }
 `;
 
 const FigCaption = styled.figcaption`
-  position: absolute;
-  cursor: pointer;
-  top: 0px;
-  right: 0px;
-  font-size: 25px;
-  opacity: 0;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    top: 0;
+    font-size: 60px;
+    opacity: 0;
 `;
 
 const Img = styled.img`
+    border-radius: 20px;
     object-fit: contain;
     width: 100%;
     height: 100%;

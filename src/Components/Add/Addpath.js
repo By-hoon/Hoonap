@@ -8,7 +8,7 @@ import { dbService } from "fbase";
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 1fr 100px 200px;
+    grid-template-columns: 1fr 250px 50px;
     margin-left: 40px;
     margin-bottom: 20px;
 `;
@@ -36,16 +36,32 @@ const MoveLink = styled(Link)`
 `;
 
 const ButtonContainer = styled.div`
-
+    margin-left: 50px;
 `;
 
-const StartBtn = styled.span``;
-
-const SubmitForm = styled.form``;
-
-const SubmitInput = styled.input``;
-
-const DeleteBtn = styled.span``;
+const BtnStyle = styled.span`
+    position: relative;
+    display: inline-block;
+    padding: 12px 36px;
+    margin: 10px;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline-style: none;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease-in-out;
+        background-color: tomato;
+    }
+    animation: opacityChange 1s linear 1 ;
+        @keyframes opacityChange{
+            0%{opacity: 0;}
+            100%{opacity: 1;}
+    } 
+`;
 
 const Addpath = (props) => {
     const isMounted = useRef(false);
@@ -83,9 +99,12 @@ const Addpath = (props) => {
     }
     const onSubmit = async (event) => {
         event.preventDefault();
-        await dbService.collection("temp_path").add(paths);
-        setPreview("off");
-        setClick(false);
+        if (paths.lat.length > 0) {
+            await dbService.collection("temp_path").add(paths);
+            setPreview("off");
+            setClick(false);
+        }
+        else alert("좌표를 입력해주세요");
     }
     const onDeleteClick = async () => {
         const ok = window.confirm("Are you sure you want to delete this polygon?");
@@ -137,12 +156,17 @@ const Addpath = (props) => {
                 </MapContainer>
                 <ButtonContainer>
                     {preview === "off" && path.length < 1 ?
-                        <StartBtn onClick={onStart}>좌표선택</StartBtn> :
+                        <BtnStyle onClick={onStart}>좌표선택</BtnStyle> :
                         preview === "on" ?
-                            <SubmitForm onSubmit={onSubmit}>
-                                <SubmitInput type="submit" value="미리보기" />
-                            </SubmitForm> :
-                            <DeleteBtn onClick={onDeleteClick}>삭제</DeleteBtn>
+                            <>
+                                <br /><br />
+                                <BtnStyle onClick={onSubmit}>미리보기</BtnStyle>
+                            </>
+                            :
+                            <>
+                                <br /><br /><br /><br />
+                                <BtnStyle onClick={onDeleteClick}>삭제</BtnStyle>
+                            </>
                     }
                 </ButtonContainer>
             </GridContainer>
