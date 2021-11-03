@@ -13,13 +13,14 @@ export default ({ userObj }) => {
     const [users, setUsers] = useState({});
     const [title, setTitle] = useState("");
     const [comments, setComments] = useState([]);
+    const [imageCon, setImageCon] = useState({});
 
     const isMounted = useRef(false);
 
     const getTitle = async (storyId) => {
         const storyDoc = await dbService.doc(`story_box/${storyId}`).get();
         const storyObj = storyDoc.data();
-        setTitle(storyObj.mainStory[0].title);
+        setTitle(storyObj.mainStory.title);
     }
 
     useEffect(() => {
@@ -79,6 +80,13 @@ export default ({ userObj }) => {
             }
         });
 
+        dbService.doc(`imageContent/${id}`).onSnapshot((snapshot) => {
+            const contentObj = snapshot.data();
+            if (isMounted.current) {
+                setImageCon(contentObj);
+            }
+        });
+
         return () => (isMounted.current = false);
     }, []);
 
@@ -93,6 +101,7 @@ export default ({ userObj }) => {
                 title={title}
                 commentArray={comments}
                 users={users}
+                imageCon={imageCon}
             />
         </>
     )

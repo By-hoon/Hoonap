@@ -1,31 +1,114 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import { dbService } from "fbase";
 import { Icon } from '@iconify/react';
 
 const CommentContainer = styled.div`
     display: flex;
+    padding: 10px;
 `;
 
-const CommentSpan = styled.span``;
+const SpanContainer = styled.div`
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    border: 1.5px #eee solid;
+    border-radius: 10px;
+    margin-left: 10px;
+`;
+
+const CommentSpan = styled.span`
+    margin-left: 3px;
+    padding: 7px;
+`;
 
 const ProfileContainer = styled.div``;
 
-const ProfileImage = styled.img``;
+const ProfileImage = styled.img`
+    width: 35px;
+    height: auto;
+    border-radius: 50%;
+`;
+
+const ProfileLink = styled(Link)``;
 
 const ProfileNoImage = styled.span``;
 
-const ButtonContainer = styled.div``;
+const ButtonContainer = styled.div`
+    font-size: 18px;
+    padding: 7px;
+`;
 
 //---------------------------------------------------------
-const CommentForm = styled.form``;
+const CommentForm = styled.form`
+    display: grid;
+    padding: 5px;
+`;
 
-const CommentInput = styled.input``;
+const BtnContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
 
-const CommentCancle = styled.button``;
+const InputContainer = styled.div`
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+`;
 
-const CommentSubmit = styled.input``;
+const CommentInput = styled.input`
+    border-radius: 8px;
+    caret-color: #b2bec3;
+    box-sizing: border-box;
+    line-height: 15px;
+    width: 100%;
+    height: 35px;
+    font-size: 15px;
+    margin-left: 5px;
+    &:focus {
+        background: azure;
+    }
+`;
+
+const CommentCancle = styled.button`
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 10px 0px 10px 5px;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline-style: none;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease-in-out;
+        background-color: #74b9ff;
+    }
+`;
+
+const CommentSubmit = styled.input`
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 10px 0px 10px 0px;
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    text-transform: uppercase;
+    outline-style: none;
+    border: 1px solid white;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover{
+        transition: 0.5s ease-in-out;
+        background-color: #74b9ff;
+    }
+`;
 
 const Comments = ({ commentObj, isOwner, users, imageComments }) => {
     const [editing, setEditing] = useState(false);
@@ -79,38 +162,46 @@ const Comments = ({ commentObj, isOwner, users, imageComments }) => {
         <>
             <CommentContainer>
                 <ProfileContainer>
-                    {Object.keys(users).length > 0 ? (
-                        users[commentObj.createdBy].profileAttachment !== "" ? (
-                            <ProfileImage />
-                        ) : (
-                            <ProfileNoImage>{users[commentObj.createdBy].userName}</ProfileNoImage>
-                        )) : null}
+                    <ProfileLink to={`/profile/${commentObj.createdBy}/stories`}>
+                        {Object.keys(users).length > 0 ? (
+                            users[commentObj.createdBy].profileAttachment !== "" ? (
+                                <>
+                                    <ProfileImage src={users[commentObj.createdBy].profileAttachment} />
+                                </>
+                            ) : (
+                                <ProfileNoImage>{users[commentObj.createdBy].userName}</ProfileNoImage>
+                            )) : null}
+                    </ProfileLink>
                 </ProfileContainer>
                 {editing ? (
                     <>
                         <CommentForm onSubmit={commentSubmit}>
-                            <CommentInput
-                                value={newComment}
-                                onChange={onChange}
-                                type="text"
-                                placeholder="댓글 수정"
-                                maxLength={200}
-                            />
-                            <CommentCancle onClick={onCancle}>취소</CommentCancle>
-                            <CommentSubmit
-                                type="submit" value="수정"
-                            />
+                            <InputContainer>
+                                <CommentInput
+                                    value={newComment}
+                                    onChange={onChange}
+                                    type="text"
+                                    placeholder="댓글 수정"
+                                    maxLength={200}
+                                />
+                            </InputContainer>
+                            <BtnContainer><CommentCancle onClick={onCancle}>취소</CommentCancle>
+                                <CommentSubmit
+                                    type="submit" value="수정"
+                                /></BtnContainer>
                         </CommentForm>
                     </>
                 ) : (
                     <>
-                        <CommentSpan>{commentObj.comment}</CommentSpan>
-                        {isOwner ? (
-                            <ButtonContainer>
-                                <Icon icon="si-glyph:arrow-change" onClick={toggleEditing} />
-                                <Icon icon="fluent:delete-20-filled" onClick={onClickDelete} />
-                            </ButtonContainer>
-                        ) : null}
+                        <SpanContainer>
+                            <CommentSpan>{commentObj.comment}</CommentSpan>
+                            {isOwner ? (
+                                <ButtonContainer>
+                                    <Icon icon="si-glyph:arrow-change" onClick={toggleEditing} />
+                                    <Icon icon="fluent:delete-20-filled" onClick={onClickDelete} style={{ marginLeft: "5px" }} />
+                                </ButtonContainer>
+                            ) : null}
+                        </SpanContainer>
                     </>
                 )}
             </CommentContainer>
