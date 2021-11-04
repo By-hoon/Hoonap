@@ -9,12 +9,15 @@ const FigContainer = styled.figure`
     position: relative;
     display: inline-block;
     margin: 20px;
-    max-width: 250px;
-    height: 250px;
+    max-width: 200px;
+    height: 200px;
     width: 100%;
     color: #bbb;
     font-size: 16px;
     box-shadow: none !important;
+    border: 1.5px solid #eaeaea;
+    border-radius: 15px;
+
     transform: translateZ(0);
 
     *,&:before, &:after{
@@ -39,13 +42,15 @@ const Img = styled.img`
 `;
 
 const FigCaption = styled.figcaption`
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0px;
+    bottom:0px;
+    left: 0px;
+    right: 0px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 15px;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const ImageLink = styled(Link)``;

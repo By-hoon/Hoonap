@@ -11,17 +11,19 @@ const CommentContainer = styled.div`
     width: 50%;
     display: grid;
     grid-template-columns: 1fr 130px;
+    margin-top: 10px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 15px;
 `;
 
 const CommentSpan = styled.span`
     margin: auto;
-    border: solid 1px tomato;
 `;
 
 const FigContainer = styled.figure`
- border: solid 1px tomato;
     text-align: center; 
-    /* position: relative; */
+    border: 1px solid #eaeaea;
+    border-radius: 15px;
     display: inline-block;
     margin: 20px;
     max-width: 100px;
@@ -31,7 +33,7 @@ const FigContainer = styled.figure`
     font-size: 16px;
     box-shadow: none !important;
     transform: translateZ(0);
-
+    
     *,&:before, &:after{
         box-sizing: border-box;
         transition: all 0.2s linear;
@@ -46,19 +48,20 @@ const FigContainer = styled.figure`
 `;
 
 const Img = styled.img`
-  max-width: 100%;
-  height: 100%;
-  object-fit: contain;
-  backface-visibility: hidden;
-  padding: 10px;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+    backface-visibility: hidden;
+    padding: 10px;
 `;
 
 const FigCaption = styled.figcaption`
   position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
+  border-radius: 15px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.5);
 `;
