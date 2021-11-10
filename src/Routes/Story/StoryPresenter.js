@@ -20,6 +20,9 @@ const FigContainer = styled.figure`
     color: #bbb;
     font-size: 16px;
     box-shadow: none !important;
+    border: 1.5px solid #eaeaea;
+    border-radius: 15px;
+
     transform: translateZ(0);
 
     *,&:before, &:after{
@@ -38,23 +41,21 @@ const FigContainer = styled.figure`
 const Img = styled.img`
   max-width: 100%;
   height: 100%;
-  
   object-fit: contain;
   backface-visibility: hidden;
-  /* vertical-align: top; */
   padding: 10px;
 `;
 
 const FigCaption = styled.figcaption`
-  position: absolute;
-  top: 5px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  /* border-radius: 50%; */
-
+    position: absolute;
+    top: 0px;
+    bottom:0px;
+    left: 0px;
+    right: 0px;
+    border: 1.5px solid #eaeaea;
+    border-radius: 15px;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const SpanBox = styled.div`
@@ -101,10 +102,10 @@ const StoryPresenter = ({ error, loading, storyObj }) => {
                                 <ImageLink to={`/comment/${imgId}`}>
                                     <Img src={img} />
                                     <FigCaption>
-                                        <SpanBox>
+                                        {/* <SpanBox>
                                             <PreviewSpan>3 likes</PreviewSpan>
                                             <PreviewSpan>5 comments</PreviewSpan>
-                                        </SpanBox>
+                                        </SpanBox> */}
                                     </FigCaption>
                                 </ImageLink>
                             </FigContainer>

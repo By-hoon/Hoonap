@@ -12,9 +12,9 @@ const FlexContainer = styled.div`
 const FigContainer = styled.figure`
     position: relative;
     display: inline-block;
-    margin: 20px;
-    max-width: 250px;
-    height: 250px;
+    margin: 40px;
+    max-width: 320px;
+    height: 320px;
     width: 100%;
     color: #bbb;
     font-size: 16px;
@@ -121,7 +121,7 @@ const BlogPresenter = ({ titleImgs, titleIds, titleName, loading, error }) => {
                                 <StoryLink to={storyLink}>
                                     <TitleImage src={img} alt="titleImg"></TitleImage>
                                     <FigCaption>
-                                        <TitleSpan>{titleName[index]}</TitleSpan>
+                                        <TitleSpan>{titleImgs[index].length}</TitleSpan>
                                     </FigCaption>
                                 </StoryLink>
                             </FigContainer>

@@ -127,9 +127,13 @@ const Mainmenu = ({ userObj }) => {
                 </MainItem>
                 <SubItem
                     go={go === "profile"}
-                ><ItemLink to={`/profile/${userObj.uid}/stories`}><IconStyle>
-                    <IconImage src={userObj.profileImg} />
-                </IconStyle></ItemLink></SubItem>
+                ><ItemLink to={`/profile/${userObj.uid}/stories`}>
+                        {userObj.profileImg ? (
+                            <IconStyle>
+                                <IconImage src={userObj.profileImg} />
+                            </IconStyle>
+                        ) : <IconSpan>Profile</IconSpan>}
+                    </ItemLink></SubItem>
                 <SubItem
                     go={go === "profile"}
                 ><ItemLink to="/add/path"><IconStyle><Icon icon="bx:bxs-add-to-queue" /></IconStyle></ItemLink></SubItem>
